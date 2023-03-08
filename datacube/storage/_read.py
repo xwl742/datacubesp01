@@ -7,6 +7,7 @@
 from affine import Affine
 import numpy as np
 from typing import Optional, Tuple
+from osgeo import gdal, gdalconst
 
 from ..utils.math import is_almost_int, valid_mask
 
@@ -25,11 +26,43 @@ from ..utils.geometry._warp import is_resampling_nn, Resampling, Nodata
 from ..utils.geometry import gbox as gbx
 
 
+
+def ReadByGDALPostgis(rasterdataset, roi_src, output_shape):
+    """
+    band1=dataset.GetRasterBand(1)
+    data=band1.ReadAsArray()
+    data.shape
+    data=band1.ReadAsArray(xoff=3900, yoff=3900, win_xsize=100, win_ysize=100, buf_xsize=10, buf_ysize=10, \
+                           resample_alg = gdalconst.GRIORA_NearestNeighbour)
+    """
+    resample = [
+        'GRIORA_Average',
+        'GRIORA_Bilinear',
+        'GRIORA_Cubic',
+        'GRIORA_CubicSpline',
+        'GRIORA_Gauss',
+        'GRIORA_Lanczos',
+        'GRIORA_Mode',
+        'GRIORA_NearestNeighbour'
+    ]
+    #to to do
+    # choose resampling method & band index
+    print(roi_src[1].start,type(roi_src[1].start))
+    print(roi_src[0].start, type(roi_src[0].start))
+    return  rasterdataset.GetRasterBand(1).ReadAsArray(xoff=float(roi_src[1].start), yoff=float(roi_src[0].start), win_xsize=float(roi_src[1].stop-roi_src[1].start), \
+                           win_ysize=float(roi_src[0].stop-roi_src[0].start), buf_xsize=output_shape[1], buf_ysize=output_shape[0],\
+                           resample_alg = gdalconst.GRIORA_NearestNeighbour)
 def rdr_geobox(rdr) -> GeoBox:
     """ Construct GeoBox from opened dataset reader.
     """
     h, w = rdr.shape
     return GeoBox(w, h, rdr.transform, rdr.crs)
+
+def rdr_geobox_gdal_v1(shape, transform, crs) -> GeoBox:
+    """
+    Construct GeoBox from opened dataset reader.
+    """
+    return GeoBox(shape[1], shape[0], transform, crs)
 
 
 def can_paste(rr, stol=1e-3, ttol=1e-2):
@@ -108,6 +141,102 @@ def pick_read_scale(scale: float, rdr=None, tol=1e-3):
 
     return scale
 
+def read_time_slice_sp(rdr,
+                    dst: np.ndarray,
+                    dst_gbox: GeoBox,
+                    resampling: Resampling,
+                    dst_nodata: Nodata,
+                    extra_dim_index: Optional[int] = None) -> Tuple[slice, slice]:
+
+    # to do: data read
+    assert dst.shape == dst_gbox.shape
+
+    # calculate src_gbox | prepare transform, crs, shape
+    ratser_gdal = rdr.open()
+    transform_rio = Affine.from_gdal(*(ratser_gdal.GetGeoTransform()))
+    src_shape = (ratser_gdal.RasterXSize, ratser_gdal.RasterYSize)
+    src_gbox = rdr_geobox_gdal_v1((src_shape[1], src_shape[0]), transform_rio, rdr.get_crs())
+
+    rr = compute_reproject_roi(src_gbox, dst_gbox)
+
+    if roi_is_empty(rr.roi_dst):
+        return rr.roi_dst
+
+    is_nn = is_resampling_nn(resampling)
+    # rdr useless
+    scale = pick_read_scale(rr.scale, rdr)
+
+    paste_ok, _ = can_paste(rr, ttol=0.9 if is_nn else 0.01)
+
+
+    def norm_read_args(roi, shape, extra_dim_index):
+        if roi_is_full(roi, rdr.shape):
+            roi = None
+
+        if roi is None and shape == rdr.shape:
+            shape = None
+
+        w = w_[roi]
+
+        # Build 3D read window
+        # Note: Might be a good idea to natively support nD read windows.
+        if extra_dim_index is not None:
+            if w is None:
+                w = ()
+            return (extra_dim_index,) + w, shape
+        else:
+            # 2D read window
+            # ipdb.set_trace()
+            return w, shape
+
+    if paste_ok:
+        A = rr.transform.linear
+        sx, sy = A.a, A.e
+
+        dst = dst[rr.roi_dst]
+
+        # src code| read by rasterio datasetreader
+        # pix = rdr.read(*norm_read_args(rr.roi_src, dst.shape, extra_dim_index))
+        pix = ReadByGDALPostgis(ratser_gdal, rr.roi_src, dst_gbox.shape)
+
+        if sx < 0:
+            pix = pix[:, ::-1]
+        if sy < 0:
+            pix = pix[::-1, :]
+
+        if rdr.nodata is None:
+            np.copyto(dst, pix)
+        else:
+            np.copyto(dst, pix, where=valid_mask(pix, rdr.nodata))
+    else:
+        if rr.is_st:
+            # add padding on src/dst ROIs, it was set to tight bounds
+            # toTODO: this should probably happen inside compute_reproject_roi
+            rr.roi_dst = roi_pad(rr.roi_dst, 1, dst_gbox.shape)
+            rr.roi_src = roi_pad(rr.roi_src, 1, src_gbox.shape)
+
+        dst = dst[rr.roi_dst]
+        dst_gbox = dst_gbox[rr.roi_dst]
+        src_gbox = src_gbox[rr.roi_src]
+        if scale > 1:
+            src_gbox = gbx.zoom_out(src_gbox, scale)
+
+        #window, shape = norm_read_args(rr.roi_src, dst.shape, extra_dim_index)
+        # pix = rdr.read(*norm_read_args(rr.roi_src, src_gbox.shape, extra_dim_index))
+        pix = ReadByGDALPostgis(ratser_gdal, rr.roi_src, dst_gbox.shape)
+        #pix = rdr.read(*(window, shape))
+
+
+
+        #to do nodata compute
+        if rr.transform.linear is not None:
+            A = (~src_gbox.transform) * dst_gbox.transform
+            warp_affine(pix, dst, A, resampling,
+                        src_nodata=0, dst_nodata=0)
+        else:
+            rio_reproject(pix, dst, src_gbox, dst_gbox, resampling,
+                          src_nodata=0, dst_nodata=0)
+    return rr.roi_dst
 
 def read_time_slice(rdr,
                     dst: np.ndarray,

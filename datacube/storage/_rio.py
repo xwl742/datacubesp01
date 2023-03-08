@@ -14,13 +14,14 @@ from affine import Affine
 import rasterio  # type: ignore[import]
 from urllib.parse import urlparse
 from typing import Optional, Iterator
+from osgeo import gdal
 
 from datacube.utils import geometry
 from datacube.utils.math import num2numpy
 from datacube.utils import uri_to_local_path, get_part_from_uri, is_vsipath
 from datacube.utils.rio import activate_from_config
 from ..drivers.datasource import DataSource, GeoRasterReader, RasterShape, RasterWindow
-from ._base import BandInfo
+from ._base import BandInfo, BandInfo_sp
 from ._hdf5 import HDF5_LOCK
 
 _LOG = logging.getLogger(__name__)
@@ -223,6 +224,46 @@ def _build_hdf_uri(url_str: str, fmt: str, layer: str) -> str:
 
     return '{}:"{}":{}'.format(fmt, base, layer)
 
+class RasterDataSourceforGDAL(RasterioDataSource):
+    def __init__(self, bandinfo: BandInfo_sp):
+        self._band_info = bandinfo
+        self._hdf = _is_hdf(bandinfo.format)
+        # self._part = get_part_from_uri(bandinfo.uri)
+        self._part = None
+        filename = bandinfo.connect_info['filename']
+        lock = HDF5_LOCK if self._hdf else None
+        super(RasterDataSourceforGDAL, self).__init__(filename, nodata=bandinfo.nodata, lock=lock)
+
+
+    def get_transform(self, shape: RasterShape) -> Affine:
+        return self._band_info.transform * Affine.scale(   # type: ignore[type-var, return-value]
+            1 / shape[1],
+            1 / shape[0]
+        )
+
+    def get_crs(self):
+        return self._band_info.crs
+
+
+    def get_data_info(self, data):
+        """
+        return content: CRS, transform, shape..
+        """
+        transform = data.GetGeoTransform()
+        proj = data.GetProjection()
+        return transform, proj
+
+    def open(self):
+        """
+        return type: osgeo.gdal.Dataset
+        """
+
+        connect_info = self._band_info.connect_info
+        gdal.AllRegister()
+        path = "PG:host={} port={} dbname={} user={} table={} schema={} password={} mode=2 "\
+            .format(connect_info['host'], connect_info['port'], connect_info['dbname'], connect_info['user'], connect_info['tablename'].lower(), connect_info['schema'], connect_info['password'])
+        print(path)
+        return gdal.Open(path, gdal.GA_ReadOnly)
 
 def _url2rasterio(url_str: str, fmt: str, layer: Optional[str]) -> str:
     """

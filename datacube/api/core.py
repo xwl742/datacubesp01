@@ -13,7 +13,7 @@ import xarray
 from dask import array as da
 
 from datacube.config import LocalConfig
-from datacube.storage import reproject_and_fuse, BandInfo
+from datacube.storage import reproject_and_fuse, BandInfo, BandInfo_sp, RasterDataSourceforGDAL
 from datacube.utils import ignore_exceptions_if
 from datacube.utils import geometry
 from datacube.utils.dates import normalise_dt
@@ -930,9 +930,16 @@ def _fuse_measurement(dest, datasets, geobox, measurement,
     for ds in datasets:
         src = None
         with ignore_exceptions_if(skip_broken_datasets):
-            src = new_datasource(
-                BandInfo(ds, measurement.name, extra_dim_index=extra_dim_index, patch_url=patch_url)
-            )
+            band_name = measurement.name
+            path_content = None
+            if 'image' in ds.metadata_doc.keys():
+                path_content = ds.metadata_doc['image']['bands'][band_name]['path']
+            if isinstance(path_content, dict):
+                src = RasterDataSourceforGDAL(BandInfo_sp(ds, band_name, path_content, extra_dim_index=extra_dim_index))
+            else:
+                src = new_datasource(
+                    BandInfo(ds, measurement.name, extra_dim_index=extra_dim_index, patch_url=patch_url)
+                )
 
         if src is None:
             if not skip_broken_datasets:

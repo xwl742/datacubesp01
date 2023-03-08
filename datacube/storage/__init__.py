@@ -14,15 +14,17 @@ from ..drivers.datasource import (
     RasterShape,
     RasterWindow)
 
-from ._base import BandInfo, measurement_paths
+from ._base import BandInfo, measurement_paths, BandInfo_sp
 from ._load import reproject_and_fuse
-
+from ._rio import RasterDataSourceforGDAL
 __all__ = (
     'BandInfo',
+    'BandInfo_sp',
     'DataSource',
     'GeoRasterReader',
     'RasterShape',
     'RasterWindow',
     'measurement_paths',
     'reproject_and_fuse',
+    'RasterDataSourceforGDAL'
 )
