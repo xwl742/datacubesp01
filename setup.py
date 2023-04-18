@@ -45,7 +45,7 @@ extras_require['all'] = sorted(set(sum(extras_require.values(), [])))
 extra_plugins = dict(read=[], write=[], index=[])
 
 setup(
-    name='datacube',
+    name='Spacturedatacube_sp',
     python_requires='>=3.8.0',
 
     url='https://github.com/opendatacube/datacube-core',
