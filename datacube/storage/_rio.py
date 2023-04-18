@@ -6,6 +6,7 @@
 Driver implementation for Rasterio based reader.
 """
 import logging
+import  psycopg2
 import contextlib
 from contextlib import contextmanager
 from threading import RLock
@@ -15,7 +16,7 @@ import rasterio  # type: ignore[import]
 from urllib.parse import urlparse
 from typing import Optional, Iterator
 from osgeo import gdal
-
+from datacube.config import LocalConfig
 from datacube.utils import geometry
 from datacube.utils.math import num2numpy
 from datacube.utils import uri_to_local_path, get_part_from_uri, is_vsipath
@@ -230,7 +231,7 @@ class RasterDataSourceforGDAL(RasterioDataSource):
         self._hdf = _is_hdf(bandinfo.format)
         # self._part = get_part_from_uri(bandinfo.uri)
         self._part = None
-        filename = bandinfo.connect_info['filename']
+        filename = bandinfo
         lock = HDF5_LOCK if self._hdf else None
         super(RasterDataSourceforGDAL, self).__init__(filename, nodata=bandinfo.nodata, lock=lock)
 
@@ -257,13 +258,34 @@ class RasterDataSourceforGDAL(RasterioDataSource):
         """
         return type: osgeo.gdal.Dataset
         """
+        file_name = self._band_info.file_name
+        product = self._band_info.product
+        conn_para = LocalConfig.find()._config._sections['dataset-location']
 
-        connect_info = self._band_info.connect_info
-        gdal.AllRegister()
-        path = "PG:host={} port={} dbname={} user={} table={} schema={} password={} mode=2 "\
-            .format(connect_info['host'], connect_info['port'], connect_info['dbname'], connect_info['user'], connect_info['tablename'].lower(), connect_info['schema'], connect_info['password'])
-        print(path)
-        return gdal.Open(path, gdal.GA_ReadOnly)
+        conn = psycopg2.connect(
+            """
+            host={} port={} user={} password={} dbname={}
+            """.format(conn_para['db_hostname'], conn_para['db_port'], conn_para['db_username'],
+                       conn_para['db_password'], conn_para['db_dbname']))
+        curs = conn.cursor()
+
+        try:
+            query_sql = """
+                    SELECT ST_AsGDALRaster(ST_Union(rast,1), 'GTiff') FROM {}.{} WHERE filename = '{}'
+                    """.format(conn_para['db_schema'], product, file_name)
+
+            curs.execute(query_sql)
+            vsipath = '/vsimem/band_from_postgis'
+            gdal.FileFromMemBuffer(vsipath, bytes(curs.fetchone()[0]))
+            ds = gdal.Open(vsipath)
+            gdal.Unlink(vsipath)
+        except(Exception, psycopg2.Error) as error:
+            print('Error while fething data from database', error)
+        finally:
+            if (conn):
+                curs.close()
+                conn.close()
+            return ds
 
 def _url2rasterio(url_str: str, fmt: str, layer: Optional[str]) -> str:
     """

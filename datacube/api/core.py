@@ -8,6 +8,7 @@ from itertools import groupby
 from typing import Set, Union, Optional, Dict, Tuple, cast
 import datetime
 
+import ipdb
 import numpy
 import xarray
 from dask import array as da
@@ -930,17 +931,14 @@ def _fuse_measurement(dest, datasets, geobox, measurement,
     for ds in datasets:
         src = None
         with ignore_exceptions_if(skip_broken_datasets):
-            band_name = measurement.name
-            path_content = None
-            if 'image' in ds.metadata_doc.keys():
-                path_content = ds.metadata_doc['image']['bands'][band_name]['path']
-            if isinstance(path_content, dict):
-                src = RasterDataSourceforGDAL(BandInfo_sp(ds, band_name, path_content, extra_dim_index=extra_dim_index))
+            if 'indb' in ds.metadata_doc['properties'].keys():
+                band = measurement.name
+                file_name = ds.metadata_doc['measurements'][band]['path']
+                product = ds.metadata_doc['product']['name']
+                src = RasterDataSourceforGDAL(
+                    BandInfo_sp(ds, band, file_name, product, extra_dim_index=extra_dim_index))
             else:
-                src = new_datasource(
-                    BandInfo(ds, measurement.name, extra_dim_index=extra_dim_index, patch_url=patch_url)
-                )
-
+                src = new_datasource(BandInfo(ds, measurement.name, extra_dim_index=extra_dim_index))
         if src is None:
             if not skip_broken_datasets:
                 raise ValueError(f"Failed to load dataset: {ds.id}")

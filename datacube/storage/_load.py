@@ -62,7 +62,7 @@ def reproject_and_fuse(datasources: List[DataSource],
                          after reading each file.
     """
     # pylint: disable=too-many-locals
-    from ._read import read_time_slice, read_time_slice_sp
+    from ._read import read_time_slice, read_time_slice_sp_gdal
     assert len(destination.shape) == 2
 
     def copyto_fuser(dest: np.ndarray, src: np.ndarray) -> None:
@@ -76,7 +76,7 @@ def reproject_and_fuse(datasources: List[DataSource],
     elif len(datasources) == 1:
         with ignore_exceptions_if(skip_broken_datasets):
             if isinstance(datasources[0], RasterDataSourceforGDAL):
-                read_time_slice_sp(datasources[0], destination, dst_gbox, resampling, dst_nodata, extra_dim_index)
+                read_time_slice_sp_gdal(datasources[0], destination, dst_gbox, resampling, dst_nodata, extra_dim_index)
             else:
                 with datasources[0].open() as rdr:
                     read_time_slice(rdr, destination, dst_gbox, resampling, dst_nodata, extra_dim_index)

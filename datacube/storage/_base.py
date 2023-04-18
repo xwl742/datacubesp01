@@ -67,27 +67,29 @@ def measurement_paths(ds: Dataset) -> Dict[str, str]:
 class BandInfo_sp:
     def __init__(self,
                 ds: Dataset,
-                band_name: str,
-                connect_info: dict,
+                band: str,
+                file_name: str,
+                product: str,
                 extra_dim_index: Optional[int] = None
                 ):
 
         try:
-            mp, = ds.type.lookup_measurements([band_name]).values()
+            mp, = ds.type.lookup_measurements([band]).values()
         except KeyError:
-            raise ValueError('No such band: {}'.format(band_name))
+            raise ValueError('No such band: {}'.format(band))
 
         mm = ds.measurements.get(mp.canonical_name)
 
         if mm is None:
-            raise ValueError('No such band: {}'.format(band_name))
+            raise ValueError('No such band: {}'.format(band))
 
         if ds.uris is None:
             raise ValueError('No uris defined on a dataset')
 
-        self.connect_info = connect_info
+        self.file_name = file_name
         bint, layer = _get_band_and_layer(mm)
-        self.name = band_name
+        self.product = product
+        self.name = band
         self.band = bint
         self.layer = layer
         self.dtype = mp.dtype
