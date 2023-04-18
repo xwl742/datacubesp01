@@ -1,5 +1,5 @@
 # This file describes Sentinel 2 Data, processed through NBAR, by Geoscience Australia
-# The files referenced can be found on the NCI at /g/data/dz56/datacube/002/S2_MSI_ARD/
+# The files referenced can be found on the NCI at /g/data/dz56/datacube_sp/002/S2_MSI_ARD/
 
 name: s2a_ard_granule
 description: Sentinel-2A MSI ARD - NBAR NBART and Pixel Quality

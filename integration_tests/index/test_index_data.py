@@ -16,9 +16,9 @@ from uuid import UUID
 import pytest
 from dateutil import tz
 
-from datacube.index.exceptions import MissingRecordError
-from datacube.index import Index
-from datacube.model import Dataset, MetadataType
+from datacube_sp.index.exceptions import MissingRecordError
+from datacube_sp.index import Index
+from datacube_sp.model import Dataset, MetadataType
 
 _telemetry_uuid = UUID('4ec8fe97-e8b9-11e4-87ff-1040f381a756')
 _telemetry_dataset = {
@@ -210,7 +210,7 @@ def test_transactions_api_ctx_mgr(index,
                                   ls8_eo3_product,
                                   eo3_ls8_dataset_doc,
                                   eo3_ls8_dataset2_doc):
-    from datacube.index.hl import Doc2Dataset
+    from datacube_sp.index.hl import Doc2Dataset
     resolver = Doc2Dataset(index, products=[ls8_eo3_product.name], verify_lineage=False)
     ds1, err = resolver(*eo3_ls8_dataset_doc)
     ds2, err = resolver(*eo3_ls8_dataset2_doc)
@@ -240,7 +240,7 @@ def test_transactions_api_ctx_mgr_nested(index,
                                          ls8_eo3_product,
                                          eo3_ls8_dataset_doc,
                                          eo3_ls8_dataset2_doc):
-    from datacube.index.hl import Doc2Dataset
+    from datacube_sp.index.hl import Doc2Dataset
     resolver = Doc2Dataset(index, products=[ls8_eo3_product.name], verify_lineage=False)
     ds1, err = resolver(*eo3_ls8_dataset_doc)
     ds2, err = resolver(*eo3_ls8_dataset2_doc)
@@ -273,7 +273,7 @@ def test_transactions_api_manual(index,
                                  ls8_eo3_product,
                                  eo3_ls8_dataset_doc,
                                  eo3_ls8_dataset2_doc):
-    from datacube.index.hl import Doc2Dataset
+    from datacube_sp.index.hl import Doc2Dataset
     resolver = Doc2Dataset(index, products=[ls8_eo3_product.name], verify_lineage=False)
     ds1, err = resolver(*eo3_ls8_dataset_doc)
     ds2, err = resolver(*eo3_ls8_dataset2_doc)
@@ -299,7 +299,7 @@ def test_transactions_api_hybrid(index,
                                  ls8_eo3_product,
                                  eo3_ls8_dataset_doc,
                                  eo3_ls8_dataset2_doc):
-    from datacube.index.hl import Doc2Dataset
+    from datacube_sp.index.hl import Doc2Dataset
     resolver = Doc2Dataset(index, products=[ls8_eo3_product.name], verify_lineage=False)
     ds1, err = resolver(*eo3_ls8_dataset_doc)
     ds2, err = resolver(*eo3_ls8_dataset2_doc)
@@ -343,7 +343,7 @@ def test_get_missing_things(index: Index) -> None:
     assert missing_thing is None, "get() should return none when it doesn't exist"
 
 
-@pytest.mark.parametrize('datacube_env_name', ('datacube', ))
+@pytest.mark.parametrize('datacube_env_name', ('datacube_sp', ))
 def test_index_dataset_with_sources(index, default_metadata_type):
     type_ = index.products.add_document(_pseudo_telemetry_dataset_type)
 
@@ -371,7 +371,7 @@ def test_index_dataset_with_sources(index, default_metadata_type):
     index.datasets.add(child, with_lineage=False)
 
 
-@pytest.mark.parametrize('datacube_env_name', ('datacube', ))
+@pytest.mark.parametrize('datacube_env_name', ('datacube_sp', ))
 def test_index_dataset_with_location(index: Index, default_metadata_type: MetadataType):
     first_file = Path('/tmp/first/something.yaml').absolute()
     second_file = Path('/tmp/second/something.yaml').absolute()

@@ -4,11 +4,11 @@
 # SPDX-License-Identifier: Apache-2.0
 import pytest
 import numpy
-from datacube.api.grid_workflow import GridWorkflow
-from datacube.model import GridSpec
-from datacube.utils import geometry
+from datacube_sp.api.grid_workflow import GridWorkflow
+from datacube_sp.model import GridSpec
+from datacube_sp.utils import geometry
 from unittest.mock import MagicMock
-from datacube.testutils import mk_sample_product
+from datacube_sp.testutils import mk_sample_product
 import datetime
 import uuid
 
@@ -69,7 +69,7 @@ def test_create_gridworkflow_init_failures(fake_index):
 def test_gridworkflow():
     """Test GridWorkflow with padding option."""
 
-    # ----- fake a datacube -----
+    # ----- fake a datacube_sp -----
     # e.g. let there be a dataset that coincides with a grid cell
 
     fakecrs = geometry.CRS("EPSG:4326")
@@ -202,7 +202,7 @@ def test_gridworkflow():
 
     from unittest.mock import patch
 
-    with patch("datacube.api.core.Datacube.load_data") as loader:
+    with patch("datacube_sp.api.core.Datacube.load_data") as loader:
 
         data = GridWorkflow.load(tile)
         data2 = GridWorkflow.load(padded_tile)

@@ -12,15 +12,15 @@ from affine import Affine
 import pytest
 import warnings
 
-from datacube.drivers.rio._reader import (
+from datacube_sp.drivers.rio._reader import (
     RDEntry,
     _dc_crs,
     _rio_uri,
     _rio_band_idx,
     _roi_to_window,
 )
-from datacube.testutils.geom import SAMPLE_WKT_WITHOUT_AUTHORITY, epsg3857
-from datacube.testutils.iodriver import (
+from datacube_sp.testutils.geom import SAMPLE_WKT_WITHOUT_AUTHORITY, epsg3857
+from datacube_sp.testutils.iodriver import (
     NetCDF, GeoTIFF, mk_band, mk_rio_driver, open_reader
 )
 

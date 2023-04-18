@@ -76,7 +76,7 @@ loop for each time/irregular dimension slice
   Datacube -> DataLoader:  reproject_and_fuse()
   note right
     DataLoader is not currently a class, it is 
-    functions in the ""datacube.storage.storage"" module
+    functions in the ""datacube_sp.storage.storage"" module
   end note
   activate DataLoader
   hnote over DataLoader : create a destination array in RAM

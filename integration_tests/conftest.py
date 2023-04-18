@@ -18,18 +18,18 @@ import yaml
 from click.testing import CliRunner
 from hypothesis import HealthCheck, settings
 
-import datacube.scripts.cli_app
-import datacube.utils
-from datacube.drivers.postgres import _core as pgres_core
-from datacube.drivers.postgis import _core as pgis_core
-from datacube.index import index_connect
-from datacube.index.abstract import default_metadata_type_docs
+import datacube_sp.scripts.cli_app
+import datacube_sp.utils
+from datacube_sp.drivers.postgres import _core as pgres_core
+from datacube_sp.drivers.postgis import _core as pgis_core
+from datacube_sp.index import index_connect
+from datacube_sp.index.abstract import default_metadata_type_docs
 from integration_tests.utils import _make_geotiffs, _make_ls5_scene_datasets, load_yaml_file, \
     GEOTIFF, load_test_products
 
-from datacube.config import LocalConfig
-from datacube.drivers.postgres import PostgresDb
-from datacube.drivers.postgis import PostGisDb
+from datacube_sp.config import LocalConfig
+from datacube_sp.drivers.postgres import PostgresDb
+from datacube_sp.drivers.postgis import PostGisDb
 
 _SINGLE_RUN_CONFIG_TEMPLATE = """
 
@@ -60,7 +60,7 @@ EO3_TESTDIR = INTEGRATION_TESTS_DIR / 'data' / 'eo3'
 
 
 def get_eo3_test_data_doc(path):
-    from datacube.utils import read_documents
+    from datacube_sp.utils import read_documents
     for path, doc in read_documents(EO3_TESTDIR / path):
         return doc
 
@@ -196,7 +196,7 @@ def africa_s2_product_doc():
 
 
 def doc_to_ds(index, product_name, ds_doc, ds_path):
-    from datacube.index.hl import Doc2Dataset
+    from datacube_sp.index.hl import Doc2Dataset
     resolver = Doc2Dataset(index, products=[product_name], verify_lineage=False)
     ds, err = resolver(ds_doc, ds_path)
     assert err is None and ds is not None
@@ -281,7 +281,7 @@ def africa_eo3_dataset(index, africa_s2_eo3_product, eo3_africa_dataset_doc):
 
 @pytest.fixture
 def mem_index_fresh(in_memory_config):
-    from datacube import Datacube
+    from datacube_sp import Datacube
     with Datacube(config=in_memory_config) as dc:
         yield dc
 
@@ -302,7 +302,7 @@ def mem_index_eo3(mem_index_fresh,
 @pytest.fixture
 def mem_eo3_data(mem_index_eo3, datasets_with_unembedded_lineage_doc):
     (doc_ls8, loc_ls8), (doc_wo, loc_wo) = datasets_with_unembedded_lineage_doc
-    from datacube.index.hl import Doc2Dataset
+    from datacube_sp.index.hl import Doc2Dataset
     resolver = Doc2Dataset(mem_index_eo3.index)
     ds_ls8, err = resolver(doc_ls8, loc_ls8)
     mem_index_eo3.index.datasets.add(ds_ls8)
@@ -320,7 +320,7 @@ def global_integration_cli_args():
     return list(itertools.chain(*(('--config', f) for f in CONFIG_FILE_PATHS)))
 
 
-@pytest.fixture(scope="module", params=["datacube", "experimental"])
+@pytest.fixture(scope="module", params=["datacube_sp", "experimental"])
 def datacube_env_name(request):
     return request.param
 
@@ -367,7 +367,7 @@ def uninitialised_postgres_db(local_config, request):
     """
     timezone = request.param
 
-    if local_config._env == "datacube":
+    if local_config._env == "datacube_sp":
         db = PostgresDb.from_config(
             local_config,
             application_name='test-run',
@@ -610,7 +610,7 @@ def telemetry_metadata_type_doc():
 @pytest.fixture
 def ga_metadata_type_doc():
     _FULL_EO_METADATA = Path(__file__).parent.joinpath('extensive-eo-metadata.yaml')  # noqa: N806
-    [(path, eo_md_type)] = datacube.utils.read_documents(_FULL_EO_METADATA)
+    [(path, eo_md_type)] = datacube_sp.utils.read_documents(_FULL_EO_METADATA)
     return eo_md_type
 
 
@@ -668,7 +668,7 @@ def example_ls5_nbar_metadata_doc():
 @pytest.fixture
 def clirunner(global_integration_cli_args, datacube_env_name):
     def _run_cli(opts, catch_exceptions=False,
-                 expect_success=True, cli_method=datacube.scripts.cli_app.cli,
+                 expect_success=True, cli_method=datacube_sp.scripts.cli_app.cli,
                  verbose_flag='-v'):
         exe_opts = list(itertools.chain(*(('--config', f) for f in CONFIG_FILE_PATHS)))
         exe_opts += ['--env', datacube_env_name]
@@ -694,7 +694,7 @@ def clirunner_raw():
     def _run_cli(opts,
                  catch_exceptions=False,
                  expect_success=True,
-                 cli_method=datacube.scripts.cli_app.cli,
+                 cli_method=datacube_sp.scripts.cli_app.cli,
                  verbose_flag='-v'):
         exe_opts = []
         if verbose_flag:

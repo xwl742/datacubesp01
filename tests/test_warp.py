@@ -5,10 +5,10 @@
 import numpy as np
 from affine import Affine
 import rasterio
-from datacube.utils.geometry import warp_affine, rio_reproject, gbox as gbx
-from datacube.utils.geometry._warp import resampling_s2rio, is_resampling_nn
+from datacube_sp.utils.geometry import warp_affine, rio_reproject, gbox as gbx
+from datacube_sp.utils.geometry._warp import resampling_s2rio, is_resampling_nn
 
-from datacube.testutils.geom import (
+from datacube_sp.testutils.geom import (
     AlbersGS,
 )
 

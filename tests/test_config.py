@@ -9,18 +9,18 @@ import pytest
 import configparser
 from textwrap import dedent
 
-from datacube.config import LocalConfig, parse_connect_url, parse_env_params, auto_config
-from datacube.testutils import write_files
+from datacube_sp.config import LocalConfig, parse_connect_url, parse_env_params, auto_config
+from datacube_sp.testutils import write_files
 
 
 def test_find_config():
     files = write_files({
         'base.conf': dedent("""\
-            [datacube]
+            [datacube_sp]
             db_hostname: fakehost.test.lan
         """),
         'override.conf': dedent("""\
-            [datacube]
+            [datacube_sp]
             db_hostname: overridden.test.lan
             db_database: overridden_db
         """)
@@ -30,7 +30,7 @@ def test_find_config():
     config = LocalConfig.find(paths=[str(files.joinpath('base.conf'))])
     assert config['db_hostname'] == 'fakehost.test.lan'
     # Not set: uses default
-    assert config['db_database'] == 'datacube'
+    assert config['db_database'] == 'datacube_sp'
 
     # Now two config files, with the latter overriding earlier options.
     config = LocalConfig.find(paths=[str(files.joinpath('base.conf')),
@@ -41,7 +41,7 @@ def test_find_config():
 
 config_sample = """
 [default]
-db_database: datacube
+db_database: datacube_sp
 
 # A blank host will use a local socket. Specify a hostname (such as localhost) to use TCP.
 db_hostname:
@@ -58,7 +58,7 @@ index_driver: pg
 [dev]
 # These fields are all the defaults, so they could be omitted, but are here for reference
 
-db_database: datacube
+db_database: datacube_sp
 
 # A blank host will use a local socket. Specify a hostname (such as localhost) to use TCP.
 db_hostname:
@@ -76,7 +76,7 @@ db_hostname: staging.dea.ga.gov.au
 
 
 def test_using_configparser(tmpdir):
-    sample_config = tmpdir.join('datacube.conf')
+    sample_config = tmpdir.join('datacube_sp.conf')
     sample_config.write(config_sample)
 
     config = configparser.ConfigParser()
@@ -85,7 +85,7 @@ def test_using_configparser(tmpdir):
 
 def test_empty_configfile(tmpdir):
     default_only = """[default]"""
-    sample_file = tmpdir.join('datacube.conf')
+    sample_file = tmpdir.join('datacube_sp.conf')
     sample_file.write(default_only)
     config = configparser.ConfigParser()
     config.read(str(sample_file))
@@ -251,7 +251,7 @@ def test_auto_config(monkeypatch, tmpdir):
 
     config = LocalConfig.find(paths=cfg_file_name)
     assert config['db_hostname'] == ''
-    assert config['db_database'] == 'datacube'
+    assert config['db_database'] == 'datacube_sp'
 
     cfg_file.unlink()
     assert cfg_file.exists() is False
@@ -264,7 +264,7 @@ def test_auto_config(monkeypatch, tmpdir):
     assert auto_config() == cfg_file_name
     config = LocalConfig.find(paths=cfg_file_name)
     assert config['db_hostname'] == 'some.db'
-    assert config['db_database'] == 'datacube'
+    assert config['db_database'] == 'datacube_sp'
     assert config['db_username'] == 'user'
 
     assert config.get('no_such_key', 10) == 10

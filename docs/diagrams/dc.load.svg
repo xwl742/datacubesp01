@@ -4,7 +4,7 @@
 start
 :""dc.load(**query)"";
 :Parse query;
-:Find matching ""datacube.Dataset""s;
+:Find matching ""datacube_sp.Dataset""s;
 if (User defined area in query?) then (yes)
   :Use polygon\nfrom user;
 else (no)

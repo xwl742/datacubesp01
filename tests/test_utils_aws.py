@@ -8,8 +8,8 @@ import json
 import botocore
 from botocore.credentials import ReadOnlyCredentials
 
-from datacube.testutils import write_files
-from datacube.utils.aws import (
+from datacube_sp.testutils import write_files
+from datacube_sp.utils.aws import (
     _fetch_text,
     ec2_current_region,
     auto_find_region,
@@ -46,18 +46,18 @@ def test_ec2_current_region():
              ('not valid json', None)]
 
     for (rv, expect) in tests:
-        with mock.patch('datacube.utils.aws._fetch_text', return_value=rv):
+        with mock.patch('datacube_sp.utils.aws._fetch_text', return_value=rv):
             assert ec2_current_region() == expect
 
 
 @mock.patch('datacube.utils.aws.botocore_default_region',
             return_value=None)
 def test_auto_find_region(*mocks):
-    with mock.patch('datacube.utils.aws._fetch_text', return_value=None):
+    with mock.patch('datacube_sp.utils.aws._fetch_text', return_value=None):
         with pytest.raises(ValueError):
             auto_find_region()
 
-    with mock.patch('datacube.utils.aws._fetch_text', return_value=_json(region='TT')):
+    with mock.patch('datacube_sp.utils.aws._fetch_text', return_value=_json(region='TT')):
         assert auto_find_region() == 'TT'
 
 
@@ -68,18 +68,18 @@ def test_auto_find_region_2(*mocks):
 
 
 def test_fetch_text():
-    with mock.patch('datacube.utils.aws.urlopen',
+    with mock.patch('datacube_sp.utils.aws.urlopen',
                     return_value=mock_urlopen('', 505)):
         assert _fetch_text('http://localhost:8817') is None
 
-    with mock.patch('datacube.utils.aws.urlopen',
+    with mock.patch('datacube_sp.utils.aws.urlopen',
                     return_value=mock_urlopen('text', 200)):
         assert _fetch_text('http://localhost:8817') == 'text'
 
     def fake_urlopen(*args, **kw):
         raise IOError("Always broken")
 
-    with mock.patch('datacube.utils.aws.urlopen', fake_urlopen):
+    with mock.patch('datacube_sp.utils.aws.urlopen', fake_urlopen):
         assert _fetch_text('http://localhost:8817') is None
 
 
@@ -139,7 +139,7 @@ aws_secret_access_key = fake-fake-fake
     assert aws['region_name'] == 'us-west-1'
     assert aws['aws_unsigned'] is True
 
-    with mock.patch('datacube.utils.aws._fetch_text',
+    with mock.patch('datacube_sp.utils.aws._fetch_text',
                     return_value=_json(region="mordor")):
         aws, creds = get_aws_settings(profile="no_region",
                                       aws_unsigned=True)

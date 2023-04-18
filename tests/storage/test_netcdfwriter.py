@@ -11,13 +11,13 @@ from hypothesis.strategies import text
 import string
 from uuid import uuid4
 
-from datacube.drivers.netcdf._write import _get_units
-from datacube.drivers.netcdf.writer import create_netcdf, create_coordinate, create_variable, netcdfy_data, \
+from datacube_sp.drivers.netcdf._write import _get_units
+from datacube_sp.drivers.netcdf.writer import create_netcdf, create_coordinate, create_variable, netcdfy_data, \
     create_grid_mapping_variable, flag_mask_meanings, Variable
-from datacube.drivers.netcdf import write_dataset_to_netcdf
-from datacube.drivers.netcdf.writer import DEFAULT_GRID_MAPPING
-from datacube.utils import geometry, DatacubeException, read_strings_from_netcdf
-from datacube.testutils import mk_sample_xr_dataset
+from datacube_sp.drivers.netcdf import write_dataset_to_netcdf
+from datacube_sp.drivers.netcdf.writer import DEFAULT_GRID_MAPPING
+from datacube_sp.utils import geometry, DatacubeException, read_strings_from_netcdf
+from datacube_sp.testutils import mk_sample_xr_dataset
 
 
 crs_var = DEFAULT_GRID_MAPPING

@@ -8,10 +8,10 @@ Module
 
 from psycopg2.extras import NumericRange
 
-from datacube.drivers.postgres._fields import SimpleDocField, RangeBetweenExpression, EqualsExpression, \
+from datacube_sp.drivers.postgres._fields import SimpleDocField, RangeBetweenExpression, EqualsExpression, \
     NumericRangeDocField
-from datacube.index.fields import to_expressions
-from datacube.model import Range
+from datacube_sp.index.fields import to_expressions
+from datacube_sp.model import Range
 
 
 def test_build_query_expressions():

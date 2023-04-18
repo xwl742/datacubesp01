@@ -7,8 +7,8 @@ from collections import OrderedDict
 from pathlib import Path
 
 import pytest
-from datacube.model import DatasetType
-from datacube.utils.documents import read_documents
+from datacube_sp.model import DatasetType
+from datacube_sp.utils.documents import read_documents
 
 PROJECT_ROOT = Path(__file__).parents[1]
 GEDI_PRODUCT = (

@@ -6,8 +6,8 @@ import pytest
 from unittest import mock
 import os
 
-from datacube.testutils import write_files
-from datacube.utils.rio import (
+from datacube_sp.testutils import write_files
+from datacube_sp.utils.rio import (
     activate_rio_env,
     deactivate_rio_env,
     get_rio_env,
@@ -80,7 +80,7 @@ def test_rio_env_aws():
 
 
 def test_rio_env_aws_auto_region(monkeypatch, without_aws_env):
-    import datacube.utils.aws
+    import datacube_sp.utils.aws
 
     pp = write_files({
         "config": """[default]
@@ -89,18 +89,18 @@ def test_rio_env_aws_auto_region(monkeypatch, without_aws_env):
     assert (pp/"config").exists()
     monkeypatch.setenv("AWS_CONFIG_FILE", str(pp/"config"))
 
-    assert datacube.utils.aws.botocore_default_region() is None
+    assert datacube_sp.utils.aws.botocore_default_region() is None
 
     aws = dict(aws_secret_access_key='blabla',
                aws_access_key_id='not a real one',
                aws_session_token='faketoo')
 
-    with mock.patch('datacube.utils.aws.ec2_current_region',
+    with mock.patch('datacube_sp.utils.aws.ec2_current_region',
                     return_value='TT'):
         ee = activate_rio_env(aws=aws)
         assert ee.get('AWS_REGION') == 'TT'
 
-    with mock.patch('datacube.utils.aws.ec2_current_region',
+    with mock.patch('datacube_sp.utils.aws.ec2_current_region',
                     return_value=None):
         ee = activate_rio_env(aws=aws)
         assert 'AWS_REGION' not in ee

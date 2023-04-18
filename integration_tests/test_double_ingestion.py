@@ -16,7 +16,7 @@ from integration_tests.test_end_to_end import INGESTER_CONFIGS
 
 
 # Current formulation of this test relies on non-EO3 test data
-@pytest.mark.parametrize('datacube_env_name', ('datacube', ))
+@pytest.mark.parametrize('datacube_env_name', ('datacube_sp', ))
 @pytest.mark.usefixtures('default_metadata_type',
                          'indexed_ls5_scene_products')
 def test_double_ingestion(clirunner, index, tmpdir, ingest_configs, example_ls5_dataset_paths):

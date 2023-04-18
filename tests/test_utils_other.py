@@ -3,7 +3,7 @@
 # Copyright (c) 2015-2020 ODC Contributors
 # SPDX-License-Identifier: Apache-2.0
 """
-Test utility functions from :module:`datacube.utils`
+Test utility functions from :module:`datacube_sp.utils`
 
 
 """
@@ -20,10 +20,10 @@ from hypothesis import given
 from hypothesis.strategies import integers, text
 from pandas import to_datetime
 
-from datacube.utils import gen_password, write_user_secret_file, slurp
-from datacube.model.utils import xr_apply
-from datacube.utils.dates import date_sequence
-from datacube.utils.math import (
+from datacube_sp.utils import gen_password, write_user_secret_file, slurp
+from datacube_sp.model.utils import xr_apply
+from datacube_sp.utils.dates import date_sequence
+from datacube_sp.utils.math import (
     num2numpy,
     is_almost_int,
     maybe_zero,
@@ -38,12 +38,12 @@ from datacube.utils.math import (
     data_resolution_and_offset,
     affine_from_axis,
 )
-from datacube.utils.py import sorted_items
-from datacube.utils.uris import (uri_to_local_path, mk_part_uri, get_part_from_uri, as_url, is_url,
-                                 pick_uri, uri_resolve, is_vsipath,
-                                 normalise_path, default_base_dir)
-from datacube.utils.io import check_write_path
-from datacube.testutils import mk_sample_product
+from datacube_sp.utils.py import sorted_items
+from datacube_sp.utils.uris import (uri_to_local_path, mk_part_uri, get_part_from_uri, as_url, is_url,
+                                    pick_uri, uri_resolve, is_vsipath,
+                                    normalise_path, default_base_dir)
+from datacube_sp.utils.io import check_write_path
+from datacube_sp.testutils import mk_sample_product
 
 
 def test_stats_dates():
@@ -176,7 +176,7 @@ def test_gen_pass(n_bytes):
 
 @given(text(alphabet=string.digits + string.ascii_letters + ' ,:.![]?', max_size=20))
 def test_write_user_secret_file(txt):
-    fname = u".tst-datacube-uefvwr4cfkkl0ijk.txt"
+    fname = u".tst-datacube_sp-uefvwr4cfkkl0ijk.txt"
 
     write_user_secret_file(txt, fname)
     txt_back = slurp(fname)
@@ -201,7 +201,7 @@ def test_testutils_mk_sample():
 
 
 def test_testutils_write_files():
-    from datacube.testutils import write_files, assert_file_structure
+    from datacube_sp.testutils import write_files, assert_file_structure
 
     files = {'a.txt': 'string',
              'aa.txt': ('line1\n', 'line2\n')}
@@ -306,7 +306,7 @@ def test_default_base_dir(monkeypatch):
 
 
 def test_time_info():
-    from datacube.model.utils import time_info
+    from datacube_sp.model.utils import time_info
     from datetime import datetime
 
     date = '2019-03-03T00:00:00'
@@ -343,7 +343,7 @@ def test_normalise_path():
 
 
 def test_testutils_testimage():
-    from datacube.testutils import mk_test_image, split_test_image
+    from datacube_sp.testutils import mk_test_image, split_test_image
 
     for dtype in ('uint16', 'uint32', 'int32', 'float32'):
         aa = mk_test_image(128, 64, dtype=dtype, nodata=None)
@@ -358,8 +358,8 @@ def test_testutils_testimage():
 
 
 def test_testutils_gtif(tmpdir):
-    from datacube.testutils import mk_test_image
-    from datacube.testutils.io import write_gtiff, rio_slurp
+    from datacube_sp.testutils import mk_test_image
+    from datacube_sp.testutils.io import write_gtiff, rio_slurp
 
     w, h, dtype, nodata, ndw = 96, 64, 'int16', -999, 7
 
@@ -431,7 +431,7 @@ def test_testutils_gtif(tmpdir):
 
 
 def test_testutils_geobox():
-    from datacube.testutils.io import dc_crs_from_rio, rio_geobox
+    from datacube_sp.testutils.io import dc_crs_from_rio, rio_geobox
     from rasterio.crs import CRS
     from affine import Affine
 

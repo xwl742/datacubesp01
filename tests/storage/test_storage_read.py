@@ -5,28 +5,28 @@
 from affine import Affine
 import numpy as np
 
-from datacube.storage._read import (
+from datacube_sp.storage._read import (
     can_paste,
     read_time_slice,
     read_time_slice_v2,
     pick_read_scale,
     rdr_geobox)
 
-from datacube.testutils.io import RasterFileDataSource
-from datacube.utils.geometry import (
+from datacube_sp.testutils.io import RasterFileDataSource
+from datacube_sp.utils.geometry import (
     compute_reproject_roi,
     GeoBox,
     roi_shape,
     roi_is_empty,
 )
 
-from datacube.utils.geometry import gbox as gbx
+from datacube_sp.utils.geometry import gbox as gbx
 
-from datacube.testutils.io import (
+from datacube_sp.testutils.io import (
     rio_slurp
 )
 
-from datacube.testutils.geom import (
+from datacube_sp.testutils.geom import (
     epsg3857,
     AlbersGS,
 )
@@ -80,8 +80,8 @@ def test_can_paste():
 
 
 def test_read_paste(tmpdir):
-    from datacube.testutils import mk_test_image
-    from datacube.testutils.io import write_gtiff
+    from datacube_sp.testutils import mk_test_image
+    from datacube_sp.testutils.io import write_gtiff
     from pathlib import Path
 
     pp = Path(str(tmpdir))
@@ -158,8 +158,8 @@ def test_read_paste(tmpdir):
 
 
 def test_read_with_reproject(tmpdir):
-    from datacube.testutils import mk_test_image
-    from datacube.testutils.io import write_gtiff
+    from datacube_sp.testutils import mk_test_image
+    from datacube_sp.testutils.io import write_gtiff
     from pathlib import Path
 
     pp = Path(str(tmpdir))
@@ -217,9 +217,9 @@ def test_read_with_reproject(tmpdir):
 
 
 def test_read_paste_v2(tmpdir):
-    from datacube.testutils import mk_test_image
-    from datacube.testutils.io import write_gtiff
-    from datacube.testutils.iodriver import open_reader
+    from datacube_sp.testutils import mk_test_image
+    from datacube_sp.testutils.io import write_gtiff
+    from datacube_sp.testutils.iodriver import open_reader
     from pathlib import Path
 
     pp = Path(str(tmpdir))
@@ -302,9 +302,9 @@ def test_read_paste_v2(tmpdir):
 
 
 def test_read_with_reproject_v2(tmpdir):
-    from datacube.testutils import mk_test_image
-    from datacube.testutils.io import write_gtiff
-    from datacube.testutils.iodriver import open_reader
+    from datacube_sp.testutils import mk_test_image
+    from datacube_sp.testutils.io import write_gtiff
+    from datacube_sp.testutils.iodriver import open_reader
     from pathlib import Path
 
     pp = Path(str(tmpdir))

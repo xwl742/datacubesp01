@@ -21,7 +21,7 @@ Change the sections on `python` files, to remove the `headerStartLine` and
 Run the tool:
 
 ```bash
-python3 ./licenseheaders.py --tmpl license-template.txt --years 2015-2020 --ext py --dir datacube
+python3 ./licenseheaders.py --tmpl license-template.txt --years 2015-2020 --ext py --dir datacube_sp
 python3 ./licenseheaders.py --tmpl license-template.txt --years 2015-2020 --ext py --dir integration_tests
 python3 ./licenseheaders.py --tmpl license-template.txt --years 2015-2020 --ext py --dir tests
 python3 ./licenseheaders.py --tmpl license-template.txt --years 2015-2020 --ext py --dir docs

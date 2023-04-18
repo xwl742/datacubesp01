@@ -4,10 +4,10 @@
 # SPDX-License-Identifier: Apache-2.0
 import pytest
 import xarray as xr
-from datacube.testutils.geom import epsg4326, epsg3857
-from datacube.testutils import mk_sample_xr_dataset, remove_crs
-from datacube.utils.geometry import assign_crs
-from datacube.utils.xarray_geoextensions import (
+from datacube_sp.testutils.geom import epsg4326, epsg3857
+from datacube_sp.testutils import mk_sample_xr_dataset, remove_crs
+from datacube_sp.utils.geometry import assign_crs
+from datacube_sp.utils.xarray_geoextensions import (
     _norm_crs,
     _xarray_affine,
     _xarray_geobox,

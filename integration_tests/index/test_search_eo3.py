@@ -12,15 +12,15 @@ import pytest
 import yaml
 from dateutil import tz
 
-import datacube.scripts.search_tool
-from datacube.config import LocalConfig
-from datacube.drivers.postgres._connections import DEFAULT_DB_USER
-from datacube.index import Index
-from datacube.model import Dataset
-from datacube.model import Product
-from datacube.model import Range
+import datacube_sp.scripts.search_tool
+from datacube_sp.config import LocalConfig
+from datacube_sp.drivers.postgres._connections import DEFAULT_DB_USER
+from datacube_sp.index import Index
+from datacube_sp.model import Dataset
+from datacube_sp.model import Product
+from datacube_sp.model import Range
 
-from datacube import Datacube
+from datacube_sp import Datacube
 from .search_utils import assume_utc, _cli_csv_search, _csv_search_raw, _load_product_query
 
 
@@ -636,7 +636,7 @@ def test_count_time_groups_cli(clirunner: Any,
             'product-counts',
             '1 day',
             'time in [2016-05-11, 2016-05-13]'
-        ], cli_method=datacube.scripts.search_tool.cli,
+        ], cli_method=datacube_sp.scripts.search_tool.cli,
         verbose_flag=''
     )
     expected_out = (
@@ -656,7 +656,7 @@ def test_search_cli_basic(clirunner: Any,
         [
             # No search arguments: return all datasets.
             'datasets'
-        ], cli_method=datacube.scripts.search_tool.cli
+        ], cli_method=datacube_sp.scripts.search_tool.cli
     )
     assert str(ls8_eo3_dataset.id) in result.output
     assert str(ls8_eo3_dataset.metadata_type.name) in result.output

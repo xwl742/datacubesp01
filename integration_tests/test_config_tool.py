@@ -163,14 +163,14 @@ def test_db_init_noop(clirunner, local_config, ls8_eo3_product):
     assert "eo3 " in result.output
 
 
-@pytest.mark.parametrize('datacube_env_name', ('datacube', ))
+@pytest.mark.parametrize('datacube_env_name', ('datacube_sp', ))
 def test_db_init_rebuild(clirunner, local_config, ls5_telem_type):
-    if local_config._env == "datacube":
-        from datacube.drivers.postgres import _dynamic
-        from datacube.drivers.postgres._core import SCHEMA_NAME
+    if local_config._env == "datacube_sp":
+        from datacube_sp.drivers.postgres import _dynamic
+        from datacube_sp.drivers.postgres._core import SCHEMA_NAME
     else:
-        from datacube.drivers.postgis import _dynamic
-        from datacube.drivers.postgis._core import SCHEMA_NAME
+        from datacube_sp.drivers.postgis import _dynamic
+        from datacube_sp.drivers.postgis._core import SCHEMA_NAME
     # We set the field creation logging to debug, as we assert its logging output below.
     _dynamic._LOG.setLevel(logging.DEBUG)
 
@@ -194,9 +194,9 @@ def test_db_init_rebuild(clirunner, local_config, ls5_telem_type):
 
 def test_db_init(clirunner, index):
     if index._db.driver_name == "postgis":
-        from datacube.drivers.postgis._core import drop_db, has_schema
+        from datacube_sp.drivers.postgis._core import drop_db, has_schema
     else:
-        from datacube.drivers.postgres._core import drop_db, has_schema
+        from datacube_sp.drivers.postgres._core import drop_db, has_schema
 
     with index._db._connect() as connection:
         drop_db(connection._connection)

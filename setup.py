@@ -82,7 +82,7 @@ setup(
     ),
     package_data={
         '': ['*.yaml', '*/*.yaml'],
-        'datacube': ['py.typed'],
+        'datacube_sp': ['py.typed'],
     },
     scripts=[],
     install_requires=[
@@ -113,23 +113,23 @@ setup(
 
     entry_points={
         'console_scripts': [
-            'datacube = datacube.scripts.cli_app:cli',
-            'datacube-search = datacube.scripts.search_tool:cli',
-            'datacube-worker = datacube.execution.worker:main',
+            'datacube_sp = datacube_sp.scripts.cli_app:cli',
+            'datacube_sp-search = datacube_sp.scripts.search_tool:cli',
+            'datacube_sp-worker = datacube_sp.execution.worker:main',
         ],
-        'datacube.plugins.io.read': [
-            'netcdf = datacube.drivers.netcdf.driver:reader_driver_init',
+        'datacube_sp.plugins.io.read': [
+            'netcdf = datacube_sp.drivers.netcdf.driver:reader_driver_init',
             *extra_plugins['read'],
         ],
-        'datacube.plugins.io.write': [
-            'netcdf = datacube.drivers.netcdf.driver:writer_driver_init',
+        'datacube_sp.plugins.io.write': [
+            'netcdf = datacube_sp.drivers.netcdf.driver:writer_driver_init',
             *extra_plugins['write'],
         ],
-        'datacube.plugins.index': [
-            'default = datacube.index.postgres.index:index_driver_init',
-            'null = datacube.index.null.index:index_driver_init',
-            'memory = datacube.index.memory.index:index_driver_init',
-            'postgis = datacube.index.postgis.index:index_driver_init',
+        'datacube_sp.plugins.index': [
+            'default = datacube_sp.index.postgres.index:index_driver_init',
+            'null = datacube_sp.index.null.index:index_driver_init',
+            'memory = datacube_sp.index.memory.index:index_driver_init',
+            'postgis = datacube_sp.index.postgis.index:index_driver_init',
             *extra_plugins['index'],
         ],
     },

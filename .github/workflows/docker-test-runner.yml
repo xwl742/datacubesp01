@@ -19,7 +19,7 @@ on:
 
 env:
   ORG: opendatacube
-  IMAGE: datacube-tests
+  IMAGE: datacube_sp-tests
   DOCKER_USER: gadockersvc
 
 

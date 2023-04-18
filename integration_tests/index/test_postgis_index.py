@@ -4,9 +4,9 @@
 # SPDX-License-Identifier: Apache-2.0
 import pytest
 
-from datacube.model import Range
-from datacube.index import Index
-from datacube.utils.geometry import CRS
+from datacube_sp.model import Range
+from datacube_sp.index import Index
+from datacube_sp.utils.geometry import CRS
 
 
 @pytest.mark.parametrize('datacube_env_name', ('experimental',))
@@ -28,7 +28,7 @@ def test_create_spatial_index(index: Index):
 def test_spatial_index_maintain(index: Index, ls8_eo3_product, eo3_ls8_dataset_doc):
     index.create_spatial_index(CRS("EPSG:3577"))
     assert set(index.spatial_indexes(refresh=True)) == {CRS("EPSG:3577"), CRS("EPSG:4326")}
-    from datacube.index.hl import Doc2Dataset
+    from datacube_sp.index.hl import Doc2Dataset
     resolver = Doc2Dataset(index, products=[ls8_eo3_product.name], verify_lineage=False)
     ds, err = resolver(*eo3_ls8_dataset_doc)
     assert err is None and ds is not None
@@ -76,8 +76,8 @@ def test_spatial_index_crs_validity(index: Index,
 def test_spatial_index_crs_santise():
     epsg4326 = CRS("EPSG:4326")
     epsg3577 = CRS("EPSG:3577")
-    from datacube.drivers.postgis._api import PostgisDbAPI
-    from datacube.utils.geometry import polygon
+    from datacube_sp.drivers.postgis._api import PostgisDbAPI
+    from datacube_sp.utils.geometry import polygon
     # EPSG:4326 polygons to be converted in EPSG:3577
     # Equal to entire valid region
     entire = polygon((

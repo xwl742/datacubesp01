@@ -2,7 +2,7 @@ import pytest
 
 from unittest.mock import MagicMock
 
-from datacube.index.hl import Doc2Dataset
+from datacube_sp.index.hl import Doc2Dataset
 
 
 def test_support_validation(non_geo_dataset_doc, eo_dataset_doc):

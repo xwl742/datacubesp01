@@ -7,7 +7,7 @@ import pytest
 from xarray import DataArray, Dataset
 import numpy as np
 
-from datacube.utils.masking import (
+from datacube_sp.utils.masking import (
     list_flag_names,
     create_mask_value,
     describe_variable_flags,
@@ -434,6 +434,6 @@ def test_valid_data_mask():
 
 
 def test_deprecation():
-    from datacube.storage.masking import make_mask as a
-    from datacube.utils.masking import make_mask as b
+    from datacube_sp.storage.masking import make_mask as a
+    from datacube_sp.utils.masking import make_mask as b
     assert a is b

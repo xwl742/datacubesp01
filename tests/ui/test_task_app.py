@@ -6,8 +6,8 @@
 Module
 """
 
-from datacube.ui.task_app import task_app, run_tasks, wrap_task
-import datacube.executor
+from datacube_sp.ui.task_app import task_app, run_tasks, wrap_task
+import datacube_sp.executor
 
 
 def make_test_config(index, config, **kwargs):
@@ -83,7 +83,7 @@ def test_task_app_with_no_tasks(tmpdir):
 
 def test_task_app_year_splitting():
     import pandas as pd
-    from datacube.ui.task_app import validate_year, break_query_into_years
+    from datacube_sp.ui.task_app import validate_year, break_query_into_years
     one_millisecond = pd.Timedelta('1 ms')
 
     def is_close(ts1, ts2, max_delta=one_millisecond):
@@ -141,7 +141,7 @@ def test_task_app_year_splitting():
 
 
 def test_task_app_cell_index(tmpdir):
-    from datacube.ui.task_app import validate_cell_index, validate_cell_list, cell_list_to_file
+    from datacube_sp.ui.task_app import validate_cell_index, validate_cell_list, cell_list_to_file
 
     assert validate_cell_index(None, None, None) is None
     assert validate_cell_index(None, None, '17,-12') == (17, -12)
@@ -162,7 +162,7 @@ def test_task_app_cell_index(tmpdir):
 
 
 def test_run_tasks():
-    executor = datacube.executor.SerialExecutor()
+    executor = datacube_sp.executor.SerialExecutor()
     tasks = ({'val': i} for i in range(3))
     tasks_to_do = list(range(3))
 

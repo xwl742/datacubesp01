@@ -8,7 +8,7 @@ on:
       - dra/docs-updates
 
 env:
-  DKR: opendatacube/datacube-tests:latest
+  DKR: opendatacube/datacube_sp-tests:latest
 
 jobs:
   main:

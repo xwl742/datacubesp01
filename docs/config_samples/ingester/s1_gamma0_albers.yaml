@@ -3,7 +3,7 @@ output_type: s1a_gamma0_albers
 
 description: Sentinel-1A GAMMA0 Mosaic 12.5 metre, 100km tile, Australian Albers Equal Area projection (EPSG:3577)
 
-location: '/media/simonaoliver/datacube/tiles'
+location: '/media/simonaoliver/datacube_sp/tiles'
 file_path_template: 'S1A_SAR_GAMMA0/S1A_SAR_GAMMA0_RTC_3577_{tile_index[0]}_{tile_index[1]}_{start_time}.nc'
 global_attributes:
   title: Australian Geoscience Data Cube Sentinel-1A SAR Gamma0

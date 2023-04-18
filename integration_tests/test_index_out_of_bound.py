@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 import pytest
 
-import datacube
+import datacube_sp
 from integration_tests.test_end_to_end import INGESTER_CONFIGS
 from integration_tests.test_full_ingestion import (check_open_with_api,
                                                    ensure_datasets_are_indexed, check_data_shape,
@@ -16,7 +16,7 @@ import netCDF4
 
 
 # Current formulation of this test relies on non-EO3 test data
-@pytest.mark.parametrize('datacube_env_name', ('datacube', ))
+@pytest.mark.parametrize('datacube_env_name', ('datacube_sp', ))
 @pytest.mark.timeout(20)
 @pytest.mark.usefixtures('default_metadata_type',
                          'indexed_ls5_scene_products')
@@ -45,7 +45,7 @@ def test_index_out_of_bound_error(clirunner, index, tmpdir, example_ls5_dataset_
     # Locationless scenario within database arises when we run the sync tool (with --update-location option)
     # on the disk where the actual file is removed and regenerated again with new dataset id.
     for indexed_uuid in valid_uuids:
-        dc1 = datacube.Datacube(index=index)
+        dc1 = datacube_sp.Datacube(index=index)
         datasets = dc1.find_datasets(product='ls5_nbar_scene')
         try:
             # Remove location from the index, to simulate indexed out of range scenario

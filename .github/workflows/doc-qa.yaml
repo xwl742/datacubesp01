@@ -53,4 +53,4 @@ jobs:
     steps:
       - uses: readthedocs/actions/preview@v1
         with:
-          project-slug: "datacube-core"
+          project-slug: "datacube_sp-core"

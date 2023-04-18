@@ -11,8 +11,8 @@ import datetime
 from dateutil import tz
 from psycopg2._range import Range, NumericRange
 
-from datacube.index.fields import Field
-from datacube.scripts.search_tool import write_csv, write_pretty
+from datacube_sp.index.fields import Field
+from datacube_sp.scripts.search_tool import write_csv, write_pretty
 
 
 class MockFile():

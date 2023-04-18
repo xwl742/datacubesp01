@@ -12,8 +12,8 @@ import yaml
 import rasterio
 from affine import Affine
 
-from datacube.api.query import query_group_by
-from datacube.utils import geometry, read_documents, netcdf_extract_string
+from datacube_sp.api.query import query_group_by
+from datacube_sp.utils import geometry, read_documents, netcdf_extract_string
 from integration_tests.utils import prepare_test_ingestion_configuration, GEOTIFF
 from integration_tests.test_end_to_end import INGESTER_CONFIGS
 
@@ -22,7 +22,7 @@ COMPLIANCE_CHECKER_NORMAL_LIMIT = 2
 
 
 # Current formulation of this test relies on non-EO3 test data
-@pytest.mark.parametrize('datacube_env_name', ('datacube', ))
+@pytest.mark.parametrize('datacube_env_name', ('datacube_sp', ))
 @pytest.mark.timeout(20)
 @pytest.mark.usefixtures('default_metadata_type',
                          'indexed_ls5_scene_products')
@@ -71,7 +71,7 @@ def test_full_ingestion(clirunner, index, tmpdir, example_ls5_dataset_paths, ing
 
 
 # Current formulation of this test relies on non-EO3 test data
-@pytest.mark.parametrize('datacube_env_name', ('datacube', ))
+@pytest.mark.parametrize('datacube_env_name', ('datacube_sp', ))
 @pytest.mark.timeout(20)
 @pytest.mark.usefixtures('default_metadata_type',
                          'indexed_ls5_scene_products')
@@ -207,7 +207,7 @@ def check_open_with_xarray(file_path):
 
 def check_open_with_api(index, time_slices):
     with rasterio.Env():
-        from datacube import Datacube
+        from datacube_sp import Datacube
         dc = Datacube(index=index)
 
         input_type_name = 'ls5_nbar_albers'
@@ -231,7 +231,7 @@ def check_data_with_api(index, time_slices):
     We scale down by 100 and check for predefined values in the
     corners.
     """
-    from datacube import Datacube
+    from datacube_sp import Datacube
     dc = Datacube(index=index)
 
     # TODO: this test needs to change, it tests that results are exactly the

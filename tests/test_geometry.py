@@ -10,8 +10,8 @@ import pytest
 from pytest import approx
 import pickle
 
-from datacube.utils import geometry
-from datacube.utils.geometry import (
+from datacube_sp.utils import geometry
+from datacube_sp.utils.geometry import (
     GeoBox,
     CRS,
     CRSMismatchError,
@@ -38,7 +38,7 @@ from datacube.utils.geometry import (
     projected_lon,
     w_,
 )
-from datacube.utils.geometry._base import (
+from datacube_sp.utils.geometry._base import (
     _mk_crs_coord,
     bounding_box_in_pixel_domain,
     geobox_intersection_conservative,
@@ -50,7 +50,7 @@ from datacube.utils.geometry._base import (
     _norm_crs_or_error,
     _make_crs_key,
 )
-from datacube.testutils.geom import (
+from datacube_sp.testutils.geom import (
     epsg4326,
     epsg3577,
     epsg3857,
@@ -422,7 +422,7 @@ def test_boundingbox():
 
 
 def test_densify():
-    from datacube.utils.geometry._base import densify
+    from datacube_sp.utils.geometry._base import densify
 
     s_x10 = [(0, 0), (10, 0)]
     assert densify(s_x10, 20) == s_x10
@@ -979,7 +979,7 @@ def test_crs():
 
 
 def test_polygon_path():
-    from datacube.utils.geometry.tools import polygon_path
+    from datacube_sp.utils.geometry.tools import polygon_path
 
     pp = polygon_path([0, 1])
     assert pp.shape == (2, 5)
@@ -994,7 +994,7 @@ def test_polygon_path():
 
 
 def test_gbox_boundary():
-    from datacube.utils.geometry.tools import gbox_boundary
+    from datacube_sp.utils.geometry.tools import gbox_boundary
     import numpy as np
 
     xx = np.zeros((2, 6))
@@ -1007,7 +1007,7 @@ def test_gbox_boundary():
 
 
 def test_geobox_scale_down():
-    from datacube.utils.geometry import GeoBox, CRS
+    from datacube_sp.utils.geometry import GeoBox, CRS
 
     crs = CRS('EPSG:3857')
 
@@ -1032,7 +1032,7 @@ def test_geobox_scale_down():
 
 
 def test_roi_tools():
-    from datacube.utils.geometry import (
+    from datacube_sp.utils.geometry import (
         roi_is_empty,
         roi_is_full,
         roi_shape,
@@ -1117,7 +1117,7 @@ def test_apply_affine():
 
 
 def test_point_transformer():
-    from datacube.utils.geometry import point
+    from datacube_sp.utils.geometry import point
 
     tr = epsg3857.transformer_to_crs(epsg4326)
     tr_back = epsg4326.transformer_to_crs(epsg3857)
@@ -1345,7 +1345,7 @@ def test_compute_reproject_roi_issue647():
 
     Test this case separately.
     """
-    from datacube.utils.geometry import CRS
+    from datacube_sp.utils.geometry import CRS
 
     src = GeoBox(10980, 10980,
                  Affine(10, 0, 300000,

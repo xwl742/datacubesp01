@@ -9,10 +9,10 @@ from types import SimpleNamespace
 
 import pytest
 
-from datacube.api.query import Query, _datetime_to_timestamp, query_group_by, solar_day, GroupBy, solar_offset
-from datacube.model import Range
-from datacube.utils import parse_time
-from datacube.utils.geometry import CRS
+from datacube_sp.api.query import Query, _datetime_to_timestamp, query_group_by, solar_day, GroupBy, solar_offset
+from datacube_sp.model import Range
+from datacube_sp.utils import parse_time
+from datacube_sp.utils.geometry import CRS
 
 
 @pytest.fixture
@@ -176,7 +176,7 @@ def test_solar_day():
 
 
 def test_solar_offset():
-    from datacube.utils.geometry import point
+    from datacube_sp.utils.geometry import point
     from datetime import timedelta
 
     def _hr(t):

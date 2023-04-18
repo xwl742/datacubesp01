@@ -14,11 +14,11 @@ import os
 import pytest
 from affine import Affine
 
-from datacube import Datacube
-from datacube.utils import geometry
-from datacube.utils.documents import read_documents
-from datacube.model import Measurement, MetadataType, DatasetType, Dataset
-from datacube.index.eo3 import prep_eo3
+from datacube_sp import Datacube
+from datacube_sp.utils import geometry
+from datacube_sp.utils.documents import read_documents
+from datacube_sp.model import Measurement, MetadataType, DatasetType, Dataset
+from datacube_sp.index.eo3 import prep_eo3
 
 AWS_ENV_VARS = (
     "AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN"

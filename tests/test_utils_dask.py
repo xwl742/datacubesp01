@@ -8,9 +8,9 @@ from pathlib import Path
 import dask
 import dask.delayed
 
-from datacube.utils.io import slurp
+from datacube_sp.utils.io import slurp
 
-from datacube.utils.dask import (
+from datacube_sp.utils.dask import (
     start_local_dask,
     get_total_available_memory,
     compute_memory_per_worker,
@@ -23,7 +23,7 @@ from datacube.utils.dask import (
     _save_blob_to_s3,
 )
 
-from datacube.utils.aws import (
+from datacube_sp.utils.aws import (
     s3_url_parse,
     s3_fetch,
     s3_client,

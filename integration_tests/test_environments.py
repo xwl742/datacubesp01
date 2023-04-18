@@ -4,8 +4,8 @@
 # SPDX-License-Identifier: Apache-2.0
 import pytest
 
-from datacube import Datacube
-from datacube.config import LocalConfig
+from datacube_sp import Datacube
+from datacube_sp.config import LocalConfig
 
 
 def test_multiple_environment_config(tmpdir):
@@ -32,8 +32,8 @@ db_hostname: alt-db.opendatacube.test
 
     # Make sure the correct config is passed through the API
     # Parsed config:
-    db_url = 'postgresql://{user}@db.opendatacube.test:5432/datacube'.format(user=config['db_username'])
-    alt_db_url = 'postgresql://{user}@alt-db.opendatacube.test:5432/datacube'.format(user=config['db_username'])
+    db_url = 'postgresql://{user}@db.opendatacube.test:5432/datacube_sp'.format(user=config['db_username'])
+    alt_db_url = 'postgresql://{user}@alt-db.opendatacube.test:5432/datacube_sp'.format(user=config['db_username'])
 
     with Datacube(config=config, validate_connection=False) as dc:
         assert str(dc.index.url) == db_url
@@ -52,15 +52,15 @@ db_hostname: alt-db.opendatacube.test
 
 
 def test_wrong_env_error_message(clirunner_raw, monkeypatch):
-    from datacube import config
+    from datacube_sp import config
     monkeypatch.setattr(config, 'DEFAULT_CONF_PATHS', ('/no/such/path-264619',))
 
     result = clirunner_raw(['-E', 'nosuch-env', 'system', 'check'],
                            expect_success=False)
-    assert "No datacube config found for 'nosuch-env'" in result.output
+    assert "No datacube_sp config found for 'nosuch-env'" in result.output
     assert result.exit_code != 0
 
     result = clirunner_raw(['system', 'check'],
                            expect_success=False)
-    assert "No datacube config found" in result.output
+    assert "No datacube_sp config found" in result.output
     assert result.exit_code != 0

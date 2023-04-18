@@ -8,8 +8,8 @@ import numpy
 import pytest
 import rasterio
 
-from datacube.api.query import query_group_by
-from datacube.api.core import Datacube
+from datacube_sp.api.query import query_group_by
+from datacube_sp.api.core import Datacube
 
 from integration_tests.utils import prepare_test_ingestion_configuration
 
@@ -45,7 +45,7 @@ ignore_me = pytest.mark.xfail(True, reason="get_data/get_description still to be
 
 
 @pytest.mark.usefixtures('default_metadata_type')
-@pytest.mark.parametrize('datacube_env_name', ('datacube', ))
+@pytest.mark.parametrize('datacube_env_name', ('datacube_sp', ))
 def test_end_to_end(clirunner, index, testdata_dir, ingest_configs, datacube_env_name):
     """
     Loads two dataset configurations, then ingests a sample Landsat 5 scene
@@ -229,7 +229,7 @@ def check_open_with_grid_workflow(index):
     type_name = 'ls5_nbar_albers'
     dt = index.products.get_by_name(type_name)
 
-    from datacube.api.grid_workflow import GridWorkflow
+    from datacube_sp.api.grid_workflow import GridWorkflow
     gw = GridWorkflow(index, dt.grid_spec)
 
     cells = gw.list_cells(product=type_name, cell_index=LBG_CELL)

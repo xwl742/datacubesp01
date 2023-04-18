@@ -8,8 +8,8 @@ import decimal
 from textwrap import dedent
 import pytest
 
-from datacube.model.fields import get_dataset_fields, parse_search_field, Expression
-from datacube.model import Range, metadata_from_doc
+from datacube_sp.model.fields import get_dataset_fields, parse_search_field, Expression
+from datacube_sp.model import Range, metadata_from_doc
 
 METADATA_DOC = yaml.safe_load('''---
 name: test

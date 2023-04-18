@@ -11,17 +11,17 @@ import rasterio.warp
 from affine import Affine, identity
 from rasterio.warp import Resampling
 
-from datacube.drivers.datasource import DataSource
-from datacube.model import Dataset, DatasetType, MetadataType
-from datacube.testutils.io import RasterFileDataSource
-from datacube.storage import BandInfo
-from datacube.drivers.netcdf import create_netcdf_storage_unit, Variable
-from datacube.storage import reproject_and_fuse
-from datacube.storage._rio import RasterDatasetDataSource, _url2rasterio
-from datacube.storage._read import read_time_slice
-from datacube.utils.geometry import GeoBox
+from datacube_sp.drivers.datasource import DataSource
+from datacube_sp.model import Dataset, DatasetType, MetadataType
+from datacube_sp.testutils.io import RasterFileDataSource
+from datacube_sp.storage import BandInfo
+from datacube_sp.drivers.netcdf import create_netcdf_storage_unit, Variable
+from datacube_sp.storage import reproject_and_fuse
+from datacube_sp.storage._rio import RasterDatasetDataSource, _url2rasterio
+from datacube_sp.storage._read import read_time_slice
+from datacube_sp.utils.geometry import GeoBox
 
-from datacube.testutils.geom import epsg4326, epsg3577
+from datacube_sp.testutils.geom import epsg4326, epsg3577
 
 
 def mk_gbox(shape=(2, 2), transform=identity, crs=epsg4326):
@@ -645,7 +645,7 @@ def test_netcdf_multi_part():
 
 
 def test_rasterio_nodata(tmpdir):
-    from datacube.testutils.io import dc_read, write_gtiff
+    from datacube_sp.testutils.io import dc_read, write_gtiff
     from pathlib import Path
 
     roi = np.s_[10:20, 20:30]

@@ -6,7 +6,7 @@ import pytest
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.engine.url import URL
 
-from datacube.drivers.postgres._connections import PostgresDb, handle_dynamic_token_authentication
+from datacube_sp.drivers.postgres._connections import PostgresDb, handle_dynamic_token_authentication
 
 
 counter = [0]

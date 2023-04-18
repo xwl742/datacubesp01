@@ -10,13 +10,13 @@ from types import SimpleNamespace
 from dask.delayed import Delayed
 import dask
 
-from datacube.testutils import (
+from datacube_sp.testutils import (
     mk_test_image,
     gen_tiff_dataset,
     remove_crs,
 )
-from datacube.testutils.io import native_load, rio_slurp_xarray, rio_slurp
-from datacube.utils.cog import write_cog, to_cog, _write_cog
+from datacube_sp.testutils.io import native_load, rio_slurp_xarray, rio_slurp
+from datacube_sp.utils.cog import write_cog, to_cog, _write_cog
 
 
 def gen_test_data(prefix, dask=False, shape=None):

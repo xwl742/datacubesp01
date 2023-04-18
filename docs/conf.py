@@ -139,7 +139,7 @@ html_theme_options = {
 
 html_context = {
     "github_user": "opendatacube",
-    "github_repo": "datacube-core",
+    "github_repo": "datacube_sp-core",
     "github_version": "develop",
     "doc_path": "docs",
 }

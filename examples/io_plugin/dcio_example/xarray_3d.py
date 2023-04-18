@@ -12,9 +12,9 @@ from urllib.parse import urlparse
 import numpy as np
 import xarray as xr
 from affine import Affine
-from datacube.storage import BandInfo
-from datacube.utils import geometry
-from datacube.utils.math import num2numpy
+from datacube_sp.storage import BandInfo
+from datacube_sp.utils import geometry
+from datacube_sp.utils.math import num2numpy
 
 PROTOCOL = ["file", "xarray_3d"]
 FORMAT = "xarray_3d"

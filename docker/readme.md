@@ -7,9 +7,9 @@ Example Use:
 
 ```shell
 git clone https://github.com/opendatacube/datacube-core.git
-cd datacube-core
+cd datacube_sp-core
 docker run --rm \
   -v $(pwd):/code \
-  opendatacube/datacube-tests:latest \
+  opendatacube/datacube_sp-tests:latest \
   ./check-code.sh integration_tests
 ```

@@ -9,7 +9,7 @@ from contextlib import contextmanager
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from datacube.utils.uris import normalise_path
+from datacube_sp.utils.uris import normalise_path
 
 PROTOCOL = 'file'
 FORMAT = 'pickle'

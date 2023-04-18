@@ -7,13 +7,13 @@ import yaml
 
 from types import SimpleNamespace
 
-from datacube.drivers import new_datasource, reader_drivers, writer_drivers
-from datacube.drivers import index_drivers, index_driver_by_name
-from datacube.drivers.indexes import IndexDriverCache
-from datacube.storage import BandInfo
-from datacube.storage._rio import RasterDatasetDataSource
-from datacube.testutils import mk_sample_dataset
-from datacube.model import MetadataType
+from datacube_sp.drivers import new_datasource, reader_drivers, writer_drivers
+from datacube_sp.drivers import index_drivers, index_driver_by_name
+from datacube_sp.drivers.indexes import IndexDriverCache
+from datacube_sp.storage import BandInfo
+from datacube_sp.storage._rio import RasterDatasetDataSource
+from datacube_sp.testutils import mk_sample_dataset
+from datacube_sp.model import MetadataType
 
 
 def test_new_datasource_fallback():
@@ -53,21 +53,21 @@ def test_index_drivers():
 
 
 def test_default_injection():
-    cache = IndexDriverCache('datacube.plugins.index-no-such-prefix')
+    cache = IndexDriverCache('datacube_sp.plugins.index-no-such-prefix')
     assert cache.drivers() == ['default', 'postgres']
 
 
 def test_netcdf_driver_import():
     try:
-        import datacube.drivers.netcdf.driver
+        import datacube_sp.drivers.netcdf.driver
     except ImportError:
         assert False and 'Failed to load netcdf writer driver'
 
-    assert datacube.drivers.netcdf.driver.reader_driver_init is not None
+    assert datacube_sp.drivers.netcdf.driver.reader_driver_init is not None
 
 
 def test_writer_driver_mk_uri():
-    from datacube.drivers.netcdf.driver import NetcdfWriterDriver
+    from datacube_sp.drivers.netcdf.driver import NetcdfWriterDriver
     writer_driver = NetcdfWriterDriver()
 
     assert writer_driver.uri_scheme == 'file'
@@ -104,7 +104,7 @@ dataset:
 
 
 def test_reader_cache_throws_on_missing_fallback():
-    from datacube.drivers.readers import rdr_cache
+    from datacube_sp.drivers.readers import rdr_cache
 
     rdrs = rdr_cache()
     assert rdrs is not None
@@ -114,7 +114,7 @@ def test_reader_cache_throws_on_missing_fallback():
 
 
 def test_driver_singleton():
-    from datacube.drivers._tools import singleton_setup
+    from datacube_sp.drivers._tools import singleton_setup
     from unittest.mock import MagicMock
 
     result = object()

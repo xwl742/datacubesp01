@@ -3,9 +3,9 @@
 # Copyright (c) 2015-2020 ODC Contributors
 # SPDX-License-Identifier: Apache-2.0
 import pytest
-from datacube.storage import BandInfo
-from datacube.testutils import mk_sample_dataset
-from datacube.storage._base import _get_band_and_layer
+from datacube_sp.storage import BandInfo
+from datacube_sp.testutils import mk_sample_dataset
+from datacube_sp.storage._base import _get_band_and_layer
 
 
 def test_band_layer():

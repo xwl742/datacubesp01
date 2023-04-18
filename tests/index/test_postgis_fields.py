@@ -6,8 +6,8 @@
 import datetime
 from decimal import Decimal
 
-from datacube.drivers.postgis._fields import NumericDocField, IntDocField, DoubleDocField, DateDocField
-from datacube.drivers.postgis._schema import Dataset
+from datacube_sp.drivers.postgis._fields import NumericDocField, IntDocField, DoubleDocField, DateDocField
+from datacube_sp.drivers.postgis._schema import Dataset
 
 
 def test_numeric_parse():

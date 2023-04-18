@@ -9,11 +9,11 @@ from uuid import UUID
 from types import SimpleNamespace
 import pytest
 
-from datacube.api.query import GroupBy
-from datacube.api.core import _calculate_chunk_sizes
-from datacube import Datacube
-from datacube.testutils.geom import AlbersGS
-from datacube.testutils import mk_sample_dataset
+from datacube_sp.api.query import GroupBy
+from datacube_sp.api.core import _calculate_chunk_sizes
+from datacube_sp import Datacube
+from datacube_sp.testutils.geom import AlbersGS
+from datacube_sp.testutils import mk_sample_dataset
 
 
 def test_grouping_datasets():

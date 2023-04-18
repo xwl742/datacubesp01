@@ -5,14 +5,14 @@
 import pytest
 import numpy
 from copy import deepcopy
-from datacube.testutils import mk_sample_dataset, mk_sample_product
-from datacube.model import (DatasetType, GridSpec, Measurement,
-                            MetadataType, Range, ranges_overlap)
-from datacube.utils import geometry
-from datacube.utils.documents import InvalidDocException
-from datacube.storage import measurement_paths
-from datacube.testutils.geom import AlbersGS
-from datacube.api.core import output_geobox
+from datacube_sp.testutils import mk_sample_dataset, mk_sample_product
+from datacube_sp.model import (DatasetType, GridSpec, Measurement,
+                               MetadataType, Range, ranges_overlap)
+from datacube_sp.utils import geometry
+from datacube_sp.utils.documents import InvalidDocException
+from datacube_sp.storage import measurement_paths
+from datacube_sp.testutils.geom import AlbersGS
+from datacube_sp.api.core import output_geobox
 
 
 def test_gridspec():

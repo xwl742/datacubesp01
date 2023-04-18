@@ -4,11 +4,11 @@
 # SPDX-License-Identifier: Apache-2.0
 from affine import Affine
 import pytest
-from datacube.utils.documents import parse_yaml
-from datacube.testutils import mk_sample_product
-from datacube.model import Dataset
+from datacube_sp.utils.documents import parse_yaml
+from datacube_sp.testutils import mk_sample_product
+from datacube_sp.model import Dataset
 
-from datacube.index.eo3 import (
+from datacube_sp.index.eo3 import (
     EO3Grid,
     prep_eo3,
     add_eo3_parts,

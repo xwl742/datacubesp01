@@ -6,14 +6,14 @@ import pytest
 from unittest.mock import MagicMock
 from uuid import UUID
 
-from datacube import Datacube
+from datacube_sp import Datacube
 
 
 test_uuid = UUID('4ec8fe97-e8b9-11e4-87ff-1040f381a756')
 
 
 def test_init_null(null_config):
-    from datacube.drivers.indexes import index_cache
+    from datacube_sp.drivers.indexes import index_cache
     idxs = index_cache()
     assert "default" in idxs._drivers
     assert "null" in idxs._drivers

@@ -5,7 +5,7 @@
 import numpy as np
 import pytest
 from datetime import datetime
-from datacube.utils.dates import (
+from datacube_sp.utils.dates import (
     parse_duration,
     parse_interval,
     parse_time,

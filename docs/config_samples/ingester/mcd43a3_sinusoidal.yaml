@@ -3,7 +3,7 @@ output_type: modis_mcd43a3_sinusoidal
 
 description: MODIS Albedo 16-Day L3 Global 500m, 1200 pixel tile
 
-location: '/media/simonaoliver/datacube/tiles'
+location: '/media/simonaoliver/datacube_sp/tiles'
 file_path_template: 'MCD43A3/MCD43A3_500_sinusoidal_{tile_index[0]}_{tile_index[1]}_{start_time}.nc'
 global_attributes:
   title: CSIRO Datacube MODIS Albedo 16-Day L3 Global 500m

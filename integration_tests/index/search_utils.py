@@ -8,8 +8,8 @@ from typing import Iterable, Tuple, Dict, List
 
 from dateutil import tz
 
-import datacube.scripts.search_tool
-from datacube.model import Product, Dataset
+import datacube_sp.scripts.search_tool
+from datacube_sp.model import Product, Dataset
 
 
 def _load_product_query(
@@ -35,7 +35,7 @@ def assume_utc(d):
 
 def _csv_search_raw(args, clirunner):
     # Do a CSV search from the cli, returning output as a string
-    result = clirunner(['-f', 'csv'] + list(args), cli_method=datacube.scripts.search_tool.cli, verbose_flag=False)
+    result = clirunner(['-f', 'csv'] + list(args), cli_method=datacube_sp.scripts.search_tool.cli, verbose_flag=False)
     output = result.output
     output_lines = output.split("\n")
     return "\n".join(line for line in output_lines if "WARNING" not in line)

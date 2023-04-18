@@ -41,7 +41,7 @@ RUN python3 -m pip install \
        -r /conf/requirements.txt \
        -c /conf/constraints.txt
 
-# Copy datacube-core source code into container and install from source (with addons for tests).
+# Copy datacube_sp-core source code into container and install from source (with addons for tests).
 COPY . /code
 
 RUN python3 -m pip install '/code/[all]' \

@@ -20,8 +20,8 @@ except ImportError:
 import rasterio
 import xarray as xr
 from affine import Affine
-from datacube.api.core import Datacube
-from datacube.utils import geometry
+from datacube_sp.api.core import Datacube
+from datacube_sp.utils import geometry
 
 pytest.importorskip("dcio_example.xarray_3d")  # skip this test if 3d driver is not installed
 _LOG = logging.getLogger(__name__)

@@ -5,9 +5,9 @@
 from affine import Affine
 import numpy as np
 import pytest
-from datacube.utils.geometry import gbox as gbx
-from datacube.utils import geometry
-from datacube.utils.geometry import GeoBox
+from datacube_sp.utils.geometry import gbox as gbx
+from datacube_sp.utils import geometry
+from datacube_sp.utils.geometry import GeoBox
 
 epsg3857 = geometry.CRS('EPSG:3857')
 

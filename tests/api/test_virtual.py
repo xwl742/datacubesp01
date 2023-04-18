@@ -12,14 +12,14 @@ from unittest import mock
 import numpy
 import xarray as xr
 
-from datacube.model import DatasetType, MetadataType, Dataset, GridSpec
-from datacube.utils import geometry
-from datacube.virtual import construct_from_yaml, catalog_from_yaml, VirtualProductException
-from datacube.virtual import DEFAULT_RESOLVER, Transformation
-from datacube.virtual.impl import Datacube
+from datacube_sp.model import DatasetType, MetadataType, Dataset, GridSpec
+from datacube_sp.utils import geometry
+from datacube_sp.virtual import construct_from_yaml, catalog_from_yaml, VirtualProductException
+from datacube_sp.virtual import DEFAULT_RESOLVER, Transformation
+from datacube_sp.virtual.impl import Datacube
 
-from datacube.virtual.expr import formula_parser, FormulaEvaluator, evaluate_data
-from datacube.virtual.transformations import fiscal_year
+from datacube_sp.virtual.expr import formula_parser, FormulaEvaluator, evaluate_data
+from datacube_sp.virtual.transformations import fiscal_year
 
 
 ##########################################
@@ -148,7 +148,7 @@ def catalog():
                 tags: [nbar, landsat-7]
                 recipe:
                     &cloud_free_ls7_nbar_recipe
-                    transform: datacube.virtual.transformations.ApplyMask
+                    transform: datacube_sp.virtual.transformations.ApplyMask
                     mask_measurement_name: pixelquality
                     input:
                       <<: *cloud_mask_recipe
@@ -318,7 +318,7 @@ def test_explode(dc, query):
 
 
 def test_load_data(cloud_free_nbar, dc, query):
-    with mock.patch('datacube.virtual.impl.Datacube') as mock_datacube:
+    with mock.patch('datacube_sp.virtual.impl.Datacube') as mock_datacube:
         mock_datacube.load_data = load_data
         mock_datacube.group_datasets = group_datasets
         data = cloud_free_nbar.load(dc, **query)
@@ -354,7 +354,7 @@ def test_select_transform(dc, query):
             measurements: [blue, green]
     """)
 
-    with mock.patch('datacube.virtual.impl.Datacube') as mock_datacube:
+    with mock.patch('datacube_sp.virtual.impl.Datacube') as mock_datacube:
         mock_datacube.load_data = load_data
         mock_datacube.group_datasets = group_datasets
         data = select.load(dc, **query)
@@ -373,7 +373,7 @@ def test_rename_transform(dc, query):
             measurements: [blue, green]
     """)
 
-    with mock.patch('datacube.virtual.impl.Datacube') as mock_datacube:
+    with mock.patch('datacube_sp.virtual.impl.Datacube') as mock_datacube:
         mock_datacube.load_data = load_data
         mock_datacube.group_datasets = group_datasets
         data = rename.load(dc, **query)
@@ -391,7 +391,7 @@ def test_to_float_transform(dc, query):
             measurements: [blue]
     """)
 
-    with mock.patch('datacube.virtual.impl.Datacube') as mock_datacube:
+    with mock.patch('datacube_sp.virtual.impl.Datacube') as mock_datacube:
         mock_datacube.load_data = load_data
         mock_datacube.group_datasets = group_datasets
         data = to_float.load(dc, **query)
@@ -411,7 +411,7 @@ def test_vp_handles_product_aliases(dc, query):
     assert 'verde' in measurements
     assert 'green' not in measurements
 
-    with mock.patch('datacube.virtual.impl.Datacube') as mock_datacube:
+    with mock.patch('datacube_sp.virtual.impl.Datacube') as mock_datacube:
         mock_datacube.load_data = load_data
         mock_datacube.group_datasets = group_datasets
         data = verde.load(dc, **query)
@@ -437,7 +437,7 @@ def test_expressions_transform(dc, query):
                                                   for product in dc.index.products.get_all()})
     assert 'bluegreen' in measurements
 
-    with mock.patch('datacube.virtual.impl.Datacube') as mock_datacube:
+    with mock.patch('datacube_sp.virtual.impl.Datacube') as mock_datacube:
         mock_datacube.load_data = load_data
         mock_datacube.group_datasets = group_datasets
         data = bluegreen.load(dc, **query)
@@ -466,7 +466,7 @@ def test_expressions_transform(dc, query):
     assert measurements['bluegreen'].dtype == numpy.dtype('float32')
     assert numpy.isnan(measurements['bluegreen'].nodata)
 
-    with mock.patch('datacube.virtual.impl.Datacube') as mock_datacube:
+    with mock.patch('datacube_sp.virtual.impl.Datacube') as mock_datacube:
         mock_datacube.load_data = load_data
         mock_datacube.group_datasets = group_datasets
         data = bluegreen.load(dc, **query)
@@ -485,7 +485,7 @@ def test_aggregate(dc, query, catalog):
                                              for product in dc.index.products.get_all()})
     assert 'blue' in measurements
 
-    with mock.patch('datacube.virtual.impl.Datacube') as mock_datacube, warnings.catch_warnings():
+    with mock.patch('datacube_sp.virtual.impl.Datacube') as mock_datacube, warnings.catch_warnings():
         warnings.simplefilter("ignore")
         mock_datacube.load_data = load_data
         mock_datacube.group_datasets = group_datasets
@@ -518,7 +518,7 @@ def test_register(dc, query):
                                                   for product in dc.index.products.get_all()})
     assert 'bluegreen' in measurements
 
-    with mock.patch('datacube.virtual.impl.Datacube') as mock_datacube:
+    with mock.patch('datacube_sp.virtual.impl.Datacube') as mock_datacube:
         mock_datacube.load_data = load_data
         mock_datacube.group_datasets = group_datasets
         data = bluegreen.load(dc, **query)
@@ -529,7 +529,7 @@ def test_register(dc, query):
 def test_reproject(dc, query, catalog):
     reproject_utm = catalog['reproject_utm']
 
-    with mock.patch('datacube.virtual.impl.Datacube') as mock_datacube:
+    with mock.patch('datacube_sp.virtual.impl.Datacube') as mock_datacube:
         mock_datacube.load_data = load_data
         mock_datacube.group_datasets = group_datasets
         data = reproject_utm.load(dc, **query)

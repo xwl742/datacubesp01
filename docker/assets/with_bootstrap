@@ -18,7 +18,7 @@ launch_db () {
     sudo -u postgres createdb odcintegration
 }
 
-# Become `odc` user with UID/GID compatible to datacube-core volume
+# Become `odc` user with UID/GID compatible to datacube_sp-core volume
 #  If Running As root
 #    launch db server
 #    If outside volume not owned by root

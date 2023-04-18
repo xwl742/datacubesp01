@@ -10,8 +10,8 @@ from copy import deepcopy
 
 import pytest
 
-from datacube.model import DatasetType
-from datacube.utils import InvalidDocException
+from datacube_sp.model import DatasetType
+from datacube_sp.utils import InvalidDocException
 
 only_mandatory_fields = {
     'name': 'ls7_nbar',

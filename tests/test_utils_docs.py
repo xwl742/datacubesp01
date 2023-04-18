@@ -3,7 +3,7 @@
 # Copyright (c) 2015-2020 ODC Contributors
 # SPDX-License-Identifier: Apache-2.0
 """
-Test utility functions from :module:`datacube.utils`
+Test utility functions from :module:`datacube_sp.utils`
 
 
 """
@@ -18,13 +18,13 @@ import numpy as np
 import pytest
 import toolz
 
-from datacube.model import MetadataType
-from datacube.model.utils import traverse_datasets, flatten_datasets, dedup_lineage, remap_lineage_doc
-from datacube.testutils import mk_sample_product, make_graph_abcde, gen_dataset_test_dag, dataset_maker
-from datacube.utils import (read_documents, InvalidDocException,
-                            SimpleDocNav)
-from datacube.utils.changes import check_doc_unchanged, get_doc_changes, MISSING, DocumentMismatchError
-from datacube.utils.documents import (
+from datacube_sp.model import MetadataType
+from datacube_sp.model.utils import traverse_datasets, flatten_datasets, dedup_lineage, remap_lineage_doc
+from datacube_sp.testutils import mk_sample_product, make_graph_abcde, gen_dataset_test_dag, dataset_maker
+from datacube_sp.utils import (read_documents, InvalidDocException,
+                               SimpleDocNav)
+from datacube_sp.utils.changes import check_doc_unchanged, get_doc_changes, MISSING, DocumentMismatchError
+from datacube_sp.utils.documents import (
     parse_yaml,
     without_lineage_sources,
     _open_from_s3,
@@ -37,8 +37,8 @@ from datacube.utils.documents import (
     transform_object_tree,
     metadata_subset,
 )
-from datacube.utils.serialise import jsonify_document
-from datacube.utils.uris import as_url
+from datacube_sp.utils.serialise import jsonify_document
+from datacube_sp.utils.uris import as_url
 
 
 doc_changes = [
@@ -486,7 +486,7 @@ def test_remap_lineage_doc():
 
 
 def test_merge():
-    from datacube.model.utils import merge
+    from datacube_sp.model.utils import merge
     assert merge(dict(a=1), dict(b=2)) == dict(a=1, b=2)
     assert merge(dict(a=1, b=2), dict(b=2)) == dict(a=1, b=2)
 
@@ -496,7 +496,7 @@ def test_merge():
 
 @pytest.mark.xfail(True, reason="Merging dictionaries with content of NaN doesn't work currently")
 def test_merge_with_nan():
-    from datacube.model.utils import merge
+    from datacube_sp.model.utils import merge
 
     _nan = float("nan")
     assert _nan != _nan
@@ -687,7 +687,7 @@ def test_document_subset_full_recursion():
 
 
 def test_documents_equal():
-    from datacube.utils.documents import documents_equal
+    from datacube_sp.utils.documents import documents_equal
     assert not documents_equal(7, "seven")
     assert not documents_equal({"a": "ok", "b": "mediocre"}, {"c": "great", "b": "mediocre", "a": "ok"})
     assert not documents_equal([0, 1, 2], [0, 1, 2, 3])

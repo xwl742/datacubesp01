@@ -5,8 +5,8 @@
 from datetime import datetime
 from dateutil.tz import tzutc
 
-from datacube.model import Range
-from datacube.ui import parse_expressions
+from datacube_sp.model import Range
+from datacube_sp.ui import parse_expressions
 
 
 def test_parse_empty_str():

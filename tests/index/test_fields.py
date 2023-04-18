@@ -6,11 +6,11 @@
 Module
 """
 
-from datacube.drivers.postgres._fields import SimpleDocField, NumericRangeDocField, parse_fields, RangeDocField, \
+from datacube_sp.drivers.postgres._fields import SimpleDocField, NumericRangeDocField, parse_fields, RangeDocField, \
     IntDocField
-from datacube.drivers.postgres._api import _split_uri
-from datacube.drivers.postgres._schema import DATASET
-from datacube.model import Range
+from datacube_sp.drivers.postgres._api import _split_uri
+from datacube_sp.drivers.postgres._schema import DATASET
+from datacube_sp.model import Range
 import pytest
 
 

@@ -2,21 +2,21 @@
 #
 # Copyright (c) 2015-2020 ODC Contributors
 # SPDX-License-Identifier: Apache-2.0
-from datacube import Datacube
-from datacube.api.query import query_group_by
+from datacube_sp import Datacube
+from datacube_sp.api.query import query_group_by
 import numpy as np
 from types import SimpleNamespace
 import pytest
 
 from pathlib import Path
-from datacube.testutils import (
+from datacube_sp.testutils import (
     mk_sample_dataset,
     mk_test_image,
     gen_tiff_dataset,
 )
-from datacube.testutils.io import write_gtiff, rio_slurp, rio_slurp_xarray, get_raster_info
-from datacube.testutils.iodriver import NetCDF
-from datacube.utils import ignore_exceptions_if
+from datacube_sp.testutils.io import write_gtiff, rio_slurp, rio_slurp_xarray, get_raster_info
+from datacube_sp.testutils.iodriver import NetCDF
+from datacube_sp.utils import ignore_exceptions_if
 
 
 def test_load_data(tmpdir):
@@ -144,7 +144,7 @@ def test_load_data_with_url_mangling(tmpdir):
 
 
 def test_load_data_cbk(tmpdir):
-    from datacube.api import TerminateCurrentLoad
+    from datacube_sp.api import TerminateCurrentLoad
 
     tmpdir = Path(str(tmpdir))
 
@@ -212,8 +212,8 @@ def test_load_data_cbk(tmpdir):
 
 
 def test_hdf5_lock_release_on_failure():
-    from datacube.storage._rio import RasterDatasetDataSource, HDF5_LOCK
-    from datacube.storage import BandInfo
+    from datacube_sp.storage._rio import RasterDatasetDataSource, HDF5_LOCK
+    from datacube_sp.storage import BandInfo
 
     band = dict(name='xx',
                 layer='xx',
@@ -338,7 +338,7 @@ def test_missing_file_handling():
 
 
 def test_native_load(tmpdir):
-    from datacube.testutils.io import native_load, native_geobox
+    from datacube_sp.testutils.io import native_load, native_geobox
 
     tmpdir = Path(str(tmpdir))
     spatial = dict(resolution=(15, -15),

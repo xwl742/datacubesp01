@@ -6,7 +6,7 @@
 Tests for MultiprocessingExecutor
 """
 
-from datacube.executor import get_executor
+from datacube_sp.executor import get_executor
 from time import sleep
 import pytest
 

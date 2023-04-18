@@ -66,7 +66,7 @@ def make_block(command, opt, content):
 
 
 class DatacubeDomain(Domain):
-    name = 'datacube'
+    name = 'datacube_sp'
     label = 'Data Cube'
     directives = {
         'click-help': ClickHelpDirective,

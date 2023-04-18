@@ -5,16 +5,16 @@
 import datetime
 
 import pytest
-from datacube.testutils import gen_dataset_test_dag
+from datacube_sp.testutils import gen_dataset_test_dag
 
-from datacube.utils import InvalidDocException, read_documents, SimpleDocNav
+from datacube_sp.utils import InvalidDocException, read_documents, SimpleDocNav
 
-from datacube import Datacube
-from datacube.model import Range
+from datacube_sp import Datacube
+from datacube_sp.model import Range
 
 
 def test_init_memory(in_memory_config):
-    from datacube.drivers.indexes import index_cache
+    from datacube_sp.drivers.indexes import index_cache
     idxs = index_cache()
     assert "default" in idxs._drivers
     assert "memory" in idxs._drivers
@@ -158,7 +158,7 @@ def test_mem_dataset_add_eo3(mem_index_eo3,
     dc = mem_index_eo3
     assert list(dc.index.datasets.get_all_dataset_ids(True)) == []
     assert list(dc.index.datasets.get_all_dataset_ids(False)) == []
-    from datacube.index.hl import Doc2Dataset
+    from datacube_sp.index.hl import Doc2Dataset
     resolver = Doc2Dataset(dc.index)
     with pytest.raises(ValueError) as e:
         ds, err = resolver(dataset_with_lineage_doc[0], dataset_with_lineage_doc[1])
@@ -254,7 +254,7 @@ def test_mem_ds_updates(mem_eo3_data):
         updated = dc.index.datasets.update(raw)
     assert "file:///update_test_2" in raw.uris
     # Make bad change ok
-    from datacube.utils import changes
+    from datacube_sp.utils import changes
     updated = dc.index.datasets.update(raw, updates_allowed={
         ("properties", "silly_sausages"): changes.allow_any
     })
@@ -527,7 +527,7 @@ def test_memory_dataset_add(dataset_add_configs, mem_index_fresh):
         idx.products.add_document(product_doc)
     ds_ids = set()
     ds_bad_ids = set()
-    from datacube.index.hl import Doc2Dataset
+    from datacube_sp.index.hl import Doc2Dataset
     resolver = Doc2Dataset(idx)
     for path, ds_doc in read_documents(dataset_add_configs.datasets):
         ds, err = resolver(ds_doc, 'file:///fake_uri')

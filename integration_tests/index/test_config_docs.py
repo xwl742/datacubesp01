@@ -10,15 +10,15 @@ import copy
 import pytest
 import yaml
 
-from datacube.drivers.postgres._fields import NumericRangeDocField as PgrNumericRangeDocField, PgField as PgrPgField
-from datacube.drivers.postgis._fields import NumericRangeDocField as PgsNumericRangeDocField, PgField as PgsPgField
-from datacube.index import Index
-from datacube.index.abstract import default_metadata_type_docs
-from datacube.model import MetadataType, DatasetType
-from datacube.model import Range, Dataset
-from datacube.utils import changes
-from datacube.utils.documents import documents_equal
-from datacube.testutils import sanitise_doc
+from datacube_sp.drivers.postgres._fields import NumericRangeDocField as PgrNumericRangeDocField, PgField as PgrPgField
+from datacube_sp.drivers.postgis._fields import NumericRangeDocField as PgsNumericRangeDocField, PgField as PgsPgField
+from datacube_sp.index import Index
+from datacube_sp.index.abstract import default_metadata_type_docs
+from datacube_sp.model import MetadataType, DatasetType
+from datacube_sp.model import Range, Dataset
+from datacube_sp.utils import changes
+from datacube_sp.utils.documents import documents_equal
+from datacube_sp.testutils import sanitise_doc
 
 _DATASET_METADATA = {
     'id': 'f7018d80-8807-11e5-aeaa-1040f381a756',
@@ -55,7 +55,7 @@ _DATASET_METADATA = {
 }
 
 
-@pytest.mark.parametrize('datacube_env_name', ('datacube', ))
+@pytest.mark.parametrize('datacube_env_name', ('datacube_sp', ))
 def test_metadata_indexes_views_exist(index, default_metadata_type):
     """
     :type initialised_postgres_db: datacube.drivers.postgres._connections.PostgresDb
@@ -68,7 +68,7 @@ def test_metadata_indexes_views_exist(index, default_metadata_type):
     assert _object_exists(index, 'dv_eo_dataset')
 
 
-@pytest.mark.parametrize('datacube_env_name', ('datacube', ))
+@pytest.mark.parametrize('datacube_env_name', ('datacube_sp', ))
 def test_dataset_indexes_views_exist(index, ls5_telem_type):
     """
     :type initialised_postgres_db: datacube.drivers.postgres._connections.PostgresDb
@@ -91,7 +91,7 @@ def test_dataset_indexes_views_exist(index, ls5_telem_type):
                               'dix_ls5_telem_test_gsi'), "indexed=false field gsi shouldn't have an index"
 
 
-@pytest.mark.parametrize('datacube_env_name', ('datacube', ))
+@pytest.mark.parametrize('datacube_env_name', ('datacube_sp', ))
 def test_dataset_composite_indexes_exist(index, ls5_telem_type):
     # This type has fields named lat/lon/time, so composite indexes should now exist for them:
     # (following the naming conventions)
@@ -103,7 +103,7 @@ def test_dataset_composite_indexes_exist(index, ls5_telem_type):
     assert not _object_exists(index, "dix_ls5_telem_test_time")
 
 
-@pytest.mark.parametrize('datacube_env_name', ('datacube', ))
+@pytest.mark.parametrize('datacube_env_name', ('datacube_sp', ))
 def test_field_expression_unchanged(default_metadata_type: MetadataType, telemetry_metadata_type: MetadataType) -> None:
     # We're checking for accidental changes here in our field-to-SQL code
 
@@ -185,7 +185,7 @@ def test_idempotent_add_dataset_type(index, ls8_eo3_product, extended_eo3_produc
         # TODO: Support for adding/changing search fields?
 
 
-@pytest.mark.parametrize('datacube_env_name', ('datacube', ))
+@pytest.mark.parametrize('datacube_env_name', ('datacube_sp', ))
 def test_update_dataset(index, ls5_telem_doc, example_ls5_nbar_metadata_doc):
     """
     :type index: datacube.index.Index
@@ -256,7 +256,7 @@ def test_update_dataset(index, ls5_telem_doc, example_ls5_nbar_metadata_doc):
     doc['product_type'] = 'foobar'
 
 
-@pytest.mark.parametrize('datacube_env_name', ('datacube', ))
+@pytest.mark.parametrize('datacube_env_name', ('datacube_sp', ))
 def test_update_dataset_type(index, ls5_telem_type, ls5_telem_doc, ga_metadata_type_doc):
     """
     :type ls5_telem_type: datacube.model.DatasetType
@@ -498,7 +498,7 @@ def test_filter_types_by_search(index, wo_eo3_product):
     assert res == []
 
 
-@pytest.mark.parametrize('datacube_env_name', ('datacube', ))
+@pytest.mark.parametrize('datacube_env_name', ('datacube_sp', ))
 def test_update_metadata_type_doc(index, ls5_telem_type):
     type_doc = copy.deepcopy(ls5_telem_type.metadata_type.definition)
     type_doc['dataset']['search_fields']['test_indexed'] = {
