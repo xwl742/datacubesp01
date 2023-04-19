@@ -22,12 +22,12 @@ ENVIRONMENT_VARNAME = 'DATACUBE_CONFIG_PATH'
 #:
 #: - `/etc/datacube_sp.conf`
 #: - file at `$DATACUBE_CONFIG_PATH` environment variable
-#: - `~/.datacube_sp.conf`
-#: - `datacube_sp.conf`
-DEFAULT_CONF_PATHS = tuple(p for p in ['/etc/datacube_sp.conf',
+#: - `~/.datacube.conf`
+#: - `datacube.conf`
+DEFAULT_CONF_PATHS = tuple(p for p in ['/etc/datacube.conf',
                                        os.environ.get(ENVIRONMENT_VARNAME, ''),
                                        str(os.path.expanduser("~/.datacube.conf")),
-                                       'datacube_sp.conf'] if len(p) > 0)
+                                       'datacube.conf'] if len(p) > 0)
 
 DEFAULT_ENV = 'default'
 
@@ -36,7 +36,7 @@ _DEFAULT_CONF = """
 [DEFAULT]
 # Blank implies localhost
 db_hostname:
-db_database: datacube_sp
+db_database: datacube
 index_driver: default
 # If a connection is unused for this length of time, expect it to be invalidated.
 db_connection_timeout: 60
@@ -44,7 +44,7 @@ db_connection_timeout: 60
 [user]
 # Which environment to use when none is specified explicitly.
 #   note: will fail if default_environment points to non-existent section
-# default_environment: datacube_sp
+# default_environment: datacube
 """
 
 #: Used in place of None as a default, when None is a valid but not default parameter to a function
@@ -76,7 +76,7 @@ class LocalConfig(object):
           1. Supplied as a function argument `env`
           2. DATACUBE_ENVIRONMENT environment variable
           3. user.default_environment option in the config
-          4. 'default' or 'datacube_sp' whichever is present
+          4. 'default' or 'datacube' whichever is present
 
         If environment is supplied by any of the first 3 methods is not present
         in the config, then throw an exception.
@@ -261,7 +261,7 @@ def render_dc_config(params: ConfigDict,
 
 def auto_config() -> str:
     """
-    Render config to $DATACUBE_CONFIG_PATH or ~/.datacube_sp.conf, but only if doesn't exist.
+    Render config to $DATACUBE_CONFIG_PATH or ~/.datacube.conf, but only if doesn't exist.
 
     option1:
       DATACUBE_DB_URL  postgresql://user:password@host:port/database
@@ -273,7 +273,7 @@ def auto_config() -> str:
        default config
     """
     cfg_path: Optional[PathLike] = os.environ.get('DATACUBE_CONFIG_PATH', None)
-    cfg_path = Path(cfg_path) if cfg_path else Path.home()/'.datacube_sp.conf'
+    cfg_path = Path(cfg_path) if cfg_path else Path.home()/'.datacube.conf'
 
     if cfg_path.exists():
         return str(cfg_path)
@@ -282,7 +282,7 @@ def auto_config() -> str:
 
     if len(opts) == 0:
         opts['hostname'] = ''
-        opts['database'] = 'datacube_sp'
+        opts['database'] = 'datacube'
 
     cfg_text = render_dc_config(opts)
     with open(str(cfg_path), 'wt') as f:
