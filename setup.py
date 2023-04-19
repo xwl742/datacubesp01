@@ -48,7 +48,7 @@ setup(
     name='datacube_sp',
     python_requires='>=3.8.0',
 
-    url='https://github.com/opendatacube/datacube-core',
+    url='https://github.com/xwl742/datacubesp01',
     author='Open Data Cube',
     maintainer='Open Data Cube',
     maintainer_email='',
