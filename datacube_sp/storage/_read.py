@@ -234,6 +234,7 @@ def read_time_slice_sp(rdr,
             rio_reproject(pix, dst, src_gbox, dst_gbox, resampling,
                           src_nodata=0, dst_nodata=0)
     return rr.roi_dst
+
 def read_time_slice_sp_gdal(rdr,
                     dst: np.ndarray,
                     dst_gbox: GeoBox,
