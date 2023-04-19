@@ -47,8 +47,8 @@ def ReadByGDALPostgis(rasterdataset, roi_src, output_shape):
 
     return  rasterdataset.GetRasterBand(1).ReadAsArray(xoff=float(roi_src[1].start),
                                                        yoff=float(roi_src[0].start),
-                                                       win_xsize=float(roi_src[1].stop-roi_src[1].start),
-                                                       win_ysize=float(roi_src[0].stop-roi_src[0].start))
+                                                       win_xsize=(roi_src[1].stop-roi_src[1].start),
+                                                       win_ysize=(roi_src[0].stop-roi_src[0].start))
 def rdr_geobox(rdr) -> GeoBox:
     """ Construct GeoBox from opened dataset reader.
     """
