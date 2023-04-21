@@ -90,7 +90,7 @@ class LocalConfig(object):
                                  config.get('user', 'default_environment', fallback=None))
 
         # If the user specifies a particular env, we either want to use it or Fail
-        ipdb.set_trace()
+        # ipdb.set_trace()
         if env:
             if config.has_section(env):
                 self._env = env
@@ -131,7 +131,7 @@ class LocalConfig(object):
             paths = [str(paths)]
 
         files_loaded = config.read(str(p) for p in paths if p)
-        ipdb.set_trace()
+        # ipdb.set_trace()
         return LocalConfig(
             config,
             files_loaded=files_loaded,
