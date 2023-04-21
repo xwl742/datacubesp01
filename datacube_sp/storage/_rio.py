@@ -7,6 +7,7 @@ Driver implementation for Rasterio based reader.
 """
 import logging
 import  psycopg2
+import ipdb
 import contextlib
 from contextlib import contextmanager
 from threading import RLock
@@ -262,6 +263,7 @@ class RasterDataSourceforGDAL(RasterioDataSource):
         product = self._band_info.product
         conn_para = LocalConfig.find()._config._sections['dataset-location']
         ds = None
+        ipdb.set_trace()
 
         conn = psycopg2.connect(
             """
@@ -269,13 +271,14 @@ class RasterDataSourceforGDAL(RasterioDataSource):
             """.format(conn_para['db_hostname'], conn_para['db_port'], conn_para['db_username'],
                        conn_para['db_password'], conn_para['db_dbname']))
         curs = conn.cursor()
+        ipdb.set_trace()
 
         try:
             query_sql = """
                     SELECT ST_AsGDALRaster(ST_Union(rast,1), 'GTiff') FROM {}.{} WHERE filename = '{}'
                     """.format(conn_para['db_schema'], product, file_name)
             print(query_sql)
-
+            ipdb.set_trace()
             curs.execute(query_sql)
             vsipath = '/vsimem/band_from_postgis'
             gdal.FileFromMemBuffer(vsipath, bytes(curs.fetchone()[0]))
