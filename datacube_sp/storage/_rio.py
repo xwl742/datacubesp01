@@ -264,19 +264,25 @@ class RasterDataSourceforGDAL(RasterioDataSource):
         conn_para = LocalConfig.find()._config._sections['dataset-location']
         ds = None
         ipdb.set_trace()
+        conn = psycopg2.connect(dbname = conn_para['db_dbname'],
+                                user = conn_para['db_username'],
+                                password = conn_para['db_password'],
+                                host = conn_para['db_hostname'],
+                                port = conn_para['db_port'])
 
-        conn = psycopg2.connect(
-            """
-            host={} port={} user={} password={} dbname={}
-            """.format(conn_para['db_hostname'], conn_para['db_port'], conn_para['db_username'],
-                       conn_para['db_password'], conn_para['db_dbname']))
+#         conn = psycopg2.connect(
+#             """
+#             host={} port={} user={} dbname={} password={} 
+#             """.format(conn_para['db_hostname'], conn_para['db_port'], conn_para['db_username'],
+#                        conn_para['db_dbname'], conn_para['db_password']))
+
         curs = conn.cursor()
         ipdb.set_trace()
 
         try:
             query_sql = """
-                    SELECT ST_AsGDALRaster(ST_Union(rast,1), 'GTiff') FROM {} WHERE filename = '{}'
-                    """.format(product, file_name)
+                    SELECT ST_AsGDALRaster(ST_Union(rast,1), 'GTiff') FROM {}.{} WHERE filename = '{}'
+                    """.format(conn_para['db_schema'], product, file_name)
             print(query_sql)
             ipdb.set_trace()
             curs.execute(query_sql)
