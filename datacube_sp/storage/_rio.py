@@ -274,6 +274,7 @@ class RasterDataSourceforGDAL(RasterioDataSource):
             query_sql = """
                     SELECT ST_AsGDALRaster(ST_Union(rast,1), 'GTiff') FROM {}.{} WHERE filename = '{}'
                     """.format(conn_para['db_schema'], product, file_name)
+            print(query_sql)
 
             curs.execute(query_sql)
             vsipath = '/vsimem/band_from_postgis'
