@@ -275,7 +275,7 @@ class RasterDataSourceforGDAL(RasterioDataSource):
 
         try:
             query_sql = """
-                    SELECT ST_AsGDALRaster(ST_Union(rast,1), 'GTiff') FROM .{} WHERE filename = '{}'
+                    SELECT ST_AsGDALRaster(ST_Union(rast,1), 'GTiff') FROM {} WHERE filename = '{}'
                     """.format(product, file_name)
             print(query_sql)
             ipdb.set_trace()
