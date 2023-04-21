@@ -261,6 +261,7 @@ class RasterDataSourceforGDAL(RasterioDataSource):
         file_name = self._band_info.file_name
         product = self._band_info.product
         conn_para = LocalConfig.find()._config._sections['dataset-location']
+        ds = None
 
         conn = psycopg2.connect(
             """
